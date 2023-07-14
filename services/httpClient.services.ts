@@ -1,10 +1,4 @@
-// import { config } from '../config';
-// import fetch from 'node-fetch';
-// import fetch from 'node-fetch'; 
  import axios from 'axios';
-
-// import * as dotenv from "dotenv";
-// dotenv.config();
 
 import endpoint from '../endpoints.config';
 
@@ -45,7 +39,7 @@ export const getData = async (controller: string, event: string, payload: any = 
          const response = await axios.get(url);
          return response.data;
      } catch (error) {
-    //     // console.error(error);
+         console.error(error);
          throw new Error('Error al obtener los datos');
      }
 
