@@ -3,6 +3,7 @@
 // dotenv.config();
 import endpoint from '../endpoints.config';
 import { ClassInformacionPedido } from './info.pedido.class';
+import fetch from 'node-fetch';
 // import { ClassInformacionPedido } from './info.pedido.class';
 
 export class ChatGPT {

@@ -5,6 +5,8 @@
 
 // import dotenv from 'dotenv';
 // dotenv.config();
+
+import fetch from 'node-fetch';
 import endpoint from '../endpoints.config';
 
 export class GeolocationServices {
