@@ -6,7 +6,8 @@
 // import dotenv from 'dotenv';
 // dotenv.config();
 
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
+import axios from 'axios';
 import endpoint from '../endpoints.config';
 
 export class GeolocationServices {
@@ -60,8 +61,10 @@ export class GeolocationServices {
         console.log('url direccion buscar', url);
 
         try {
-            const response = await fetch(url);
-            const data = await response.json();
+            const response = await axios.get(url);
+            // const response = await fetch(url);
+            // const data = await response.json();
+            const data = response.data
 
             if (data.results.length > 0) {
 
@@ -143,14 +146,23 @@ export class GeolocationServices {
         };
 
         try {
-            const response = await fetch(url, {                
+            // const response = await fetch(url, {                
+            //     headers: {
+            //         'Access-Control-Allow-Origin': '*'
+            //     }
+            // });
+
+            const response = await axios.get(url, {
                 headers: {
                     'Access-Control-Allow-Origin': '*'
                 }
             });
+
+            const data = response.data;
+
             // const response = await fetch(url, { mode: 'no-cors' });
             // console.log('¿response', response);
-            const data = await response.json();
+            // const data = await response.json();
 
             if (data.routes && data.routes.length > 0) {
                 const ruta = data.routes[0];

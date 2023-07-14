@@ -1,6 +1,7 @@
 // import { config } from "../config";
 // import dotenv from 'dotenv';
 // dotenv.config();
+import axios from 'axios';
 import endpoint from '../endpoints.config';
 import { ClassInformacionPedido } from './info.pedido.class';
 import fetch from 'node-fetch';
@@ -33,23 +34,44 @@ export class ChatGPT {
     private async generateResponse(prompt: string, rol: string= 'user'): Promise<string> {
         try {
             const messages = [{ role: rol, content: prompt }];
-            const response = await fetch(this.apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.apiKey}`,
-                },
-                body: JSON.stringify({
-                    model: 'gpt-3.5-turbo',
-                    messages,
-                    // max_tokens: 50,
-                    temperature: 0,
-                    n: 1,
-                    stop: '\n',
-                }),
+
+            const data_body_axios = JSON.stringify({
+                model: 'gpt-3.5-turbo',
+                messages,                
+                temperature: 0,
+                n: 1,
+                stop: '\n',
             });
 
-            const data = await response.json();
+            const config_axios = {
+                headers: {
+                    'Authorization': `Bearer ${this.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const response = await axios.post(this.apiUrl, data_body_axios, config_axios);
+
+            // const response = await fetch(this.apiUrl, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${this.apiKey}`,
+            //     },
+            //     body: JSON.stringify({
+            //         model: 'gpt-3.5-turbo',
+            //         messages,
+            //         // max_tokens: 50,
+            //         temperature: 0,
+            //         n: 1,
+            //         stop: '\n',
+            //     }),
+            // });
+
+            // const data = await response.json();
+
+            
+            const data = response.data;
             console.log('data ==== api', data);
             let rptModel = data.choices[0].message.content.trim(); 
             rptModel = rptModel.replace(this.rolResponde+'=', '');
