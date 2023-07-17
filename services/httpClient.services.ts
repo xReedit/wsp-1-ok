@@ -2,7 +2,6 @@
 // import fetch from 'node-fetch';
 // import fetch from 'node-fetch'; 
 import axios from 'axios';
-
 import endpoint from '../endpoints.config';
 
 const PUBLIC_API_KEY = endpoint.url_api_restobar // process.env.URL_API_RESTOBAR
@@ -78,7 +77,7 @@ export const getData = async (controller: string, event: string, payload: any = 
 }
 
 // export function post apirest
-export const postDataBot = async (controller: string, event: string, payload: any) => {
+export const postDataBot = async (controller: string, event: string, payload: any, waitingResponse = true) => {
     const url = `${PUBLIC_API_KEY}/${controller}/${event}`
     // const token = localStorage.getItem('token')
     // const headers = {
@@ -86,13 +85,26 @@ export const postDataBot = async (controller: string, event: string, payload: an
     //     'Authorization': `Bearer ${token}`
     // }
 
-    const _rpt = await fetch(url, {
-        method: 'POST',
-        headers: {},
-        body: JSON.stringify(payload)
-    })
+    // const _rpt = await fetch(url, {
+    //     method: 'POST',
+    //     headers: {},
+    //     body: JSON.stringify(payload)
+    // })
 
-    return _rpt.json()
+    // return _rpt.json()
+
+    try {
+        
+
+        const response = await axios.post(url, payload)
+        // const response = waitingResponse ? await axios.post(url, payload)
+        //     : await axios.post(url, payload, { timeout: 5000 })        
+        
+        return waitingResponse ? response.data : null;
+    } catch (error) {
+        console.error('Error al enviar los datos');
+        // throw new Error('Error al enviar los datos');
+    }
 }
 
 // export function post apirest
@@ -154,7 +166,7 @@ export const postDataPedidoBot = async (controller: string, event: string, paylo
 
     //try {
       //  await fetch(url, {
-        //    method: 'POST',
+        //      method: 'POST',
           //  headers,
             //body: JSON.stringify(payload)
         //})
@@ -170,3 +182,7 @@ export const postDataPedidoBot = async (controller: string, event: string, paylo
          throw new Error('Error al enviar los datos');
      }
 }
+
+
+
+    

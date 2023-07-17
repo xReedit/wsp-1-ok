@@ -1,0 +1,229 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB025B2AD549DFA8DEA72',
+    participant: undefined
+  },
+  messageTimestamp: 1689607929,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'hola',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB077DFD49687206693AD',
+    participant: undefined
+  },
+  messageTimestamp: 1689607931,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '1',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB05EAA64AB4ADA0B3BF6',
+    participant: undefined
+  },
+  messageTimestamp: 1689607982,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'quiero uxcnmzx,cnxz,mczx',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'quiero uxcnmzx,cnxz,mczx',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0A4B5CD65A06FC631CD',
+    participant: undefined
+  },
+  messageTimestamp: 1689607987,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'juasnc,mzx,ncxzcz',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'juasnc,mzx,ncxzcz',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB00D3237899E808ECC39',
+    participant: undefined
+  },
+  messageTimestamp: 1689607990,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'werwerwerwerwe',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'werwerwerwerwe',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB046A976C5BFA83A3E64',
+    participant: undefined
+  },
+  messageTimestamp: 1689607993,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'qwe124312e1',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'qwe124312e1',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51996183571@s.whatsapp.net',
+    fromMe: false,
+    id: '4D17293BC12FEC4C1CBAE2B6FA16E1DB',
+    participant: undefined
+  },
+  messageTimestamp: 1689608268,
+  pushName: '🦁Carpe diem',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'Buen día, el día lunes 10 de julio me emitieron una factura, la cual no se registra en la sunat',
+      previewType: 0,
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Buen día, el día lunes 10 de julio me emitieron una factura, la cual no se registra en la sunat',
+  from: '51996183571'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51950678723@s.whatsapp.net',
+    fromMe: false,
+    id: '951771E048E83CB8147E23D3709770C7',
+    participant: undefined
+  },
+  messageTimestamp: 1689612046,
+  pushName: 'Maria',
+  broadcast: false,
+  message: Message {
+    conversation: 'Dos boletas de 35 soles  fecha 16/07/2023',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Dos boletas de 35 soles  fecha 16/07/2023',
+  from: '51950678723'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51950678723@s.whatsapp.net',
+    fromMe: false,
+    id: '2B8386D54B5F5F73ABB095BEA72BC65E',
+    participant: undefined
+  },
+  messageTimestamp: 1689612085,
+  pushName: 'Maria',
+  broadcast: false,
+  message: Message {
+    conversation: 'Cada boleta separado',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Cada boleta separado',
+  from: '51950678723'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51950678723@s.whatsapp.net',
+    fromMe: false,
+    id: '15356C4D503D9032ADECB1F4A9F205A8',
+    participant: undefined
+  },
+  messageTimestamp: 1689612105,
+  pushName: 'Maria',
+  broadcast: false,
+  message: Message {
+    conversation: 'Gracias',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Gracias',
+  from: '51950678723'
+}

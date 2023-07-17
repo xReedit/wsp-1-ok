@@ -74,6 +74,9 @@ export class ClassGetSubTotales {
     }
 
     validarReglasCarta(rules: any[], seccionMasItems: any): any {
+
+        if (rules === null) return;
+
         // let diferencia = 0;
         let xSecc_bus = 0;
         let xSecc_detalle = 0;
@@ -88,7 +91,7 @@ export class ClassGetSubTotales {
         this.arrSeccionesPedido.map((z: any) => {
             z.items.map((n: any) => n.precio_total_calc = null);
         });            
-
+        
         rules.map((regla: any) => {
             xSecc_bus = regla.idseccion;
             xSecc_detalle = regla.idseccion_detalle;

@@ -262,6 +262,6 @@ export class ClassEstructuraPedido {
 
         postDataPedidoBot('bot', 'send-bot-pedido', _payload)
     }
-
+    
 
 }

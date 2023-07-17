@@ -2,9 +2,10 @@
 //@ts-ignore
 
 import { ClassCliente } from "../clases/cliente"
-import { getData, postData, postDataBot } from "../services/httpClient.services"
+import { getData, postDataBot } from "../services/httpClient.services"
 // import { soundex } from "../services/soundex"
 import { capitalize } from "../services/utiles"
+import { v4 as uuidv4 } from 'uuid';
 // import * as soundex from 'soundex-code';
 
 //@ts-ignore
@@ -88,4 +89,22 @@ export const getReglasCarta = async (idsede, idorg) => {
 export const getComprobanteElectronico = async (idsede, dni, serie, numero) => {    
     const rpt = await getData('chat-bot', `get-comprobante-electronico/${idsede}/${dni}/${serie}/${numero}`)    
     return rpt;    
+}
+
+
+
+// generar registro de cliente conversacion que envia a la tienda en linea
+// esto se recupera desde la tienda en linea para saber los datos cliente
+export const postDataClienteBot = (payload: any) => {    
+    const id = generarIdUnico()
+    payload = { ...payload, idchatbot_cliente: id }
+    
+    postDataBot('chat-bot', 'create-history-chatbot-cliente', payload, false)
+
+    return id;
+}
+
+function generarIdUnico() {
+    const id = uuidv4().replace(/-/g, ''); // Genera un UUID v4 y elimina los guiones
+    return id;
 }

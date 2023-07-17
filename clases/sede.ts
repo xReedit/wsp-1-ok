@@ -42,7 +42,10 @@ export class ClassInfoSede {
     public getSeccionMasItems() {
         return this.sede.listSeccionMasPiden;
     }
-    
+
+    public getLinkCarta() {
+        return this.sede.sede.link_carta;
+    }
 
 
 }

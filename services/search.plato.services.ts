@@ -214,26 +214,38 @@ function segundaBusqueda(platosBuscar: any[], lista: any[], encontrados: any) {
 
 function cocinarPeticionCliente(pedidoCliente: any) {
 
-    return pedidoCliente.map(plato => {
-        const _plato = plato.toLowerCase().split('-')
-        const _cantidad = _plato[0].trim()
-        let _nomPlato = _plato[1].toLocaleLowerCase().trim()
-        let _indicaciones = ''
-        // verificamos si viene con indicaciones que estan entre parentesis ()
-        if (_nomPlato.includes('(')) {
-            _indicaciones = _nomPlato.split('(')[1].split(')')[0].trim()
-            _nomPlato = _nomPlato.split('(')[0].trim()
-        }
+    console.log('pedidoCliente', pedidoCliente);
+    if (pedidoCliente === undefined || pedidoCliente === null) {
+        return false
+    }
+
+    try {
+        
+    
+        return pedidoCliente.map(plato => {
+            const _plato = plato.toLowerCase().split('-')
+            const _cantidad = _plato[0].trim()
+            let _nomPlato = _plato[1].toLocaleLowerCase().trim()
+            let _indicaciones = ''
+            // verificamos si viene con indicaciones que estan entre parentesis ()
+            if (_nomPlato.includes('(')) {
+                _indicaciones = _nomPlato.split('(')[1].split(')')[0].trim()
+                _nomPlato = _nomPlato.split('(')[0].trim()
+            }
 
 
-        return {
-            des: convertirFraccionesEnCadenas(_nomPlato),
-            cantidad: _cantidad,
-            indicaciones: _indicaciones,
-            encontrado: false,
-            iditem: 0, // id encontrado
-        }
-    });
+            return {
+                des: convertirFraccionesEnCadenas(_nomPlato),
+                cantidad: _cantidad,
+                indicaciones: _indicaciones,
+                encontrado: false,
+                iditem: 0, // id encontrado
+            }
+        });
+
+    } catch (error) {
+        return false
+    }
 
 }
 

@@ -35,44 +35,44 @@ export class ChatGPT {
         try {
             const messages = [{ role: rol, content: prompt }];
 
-            const data_body_axios = JSON.stringify({
-                model: 'gpt-3.5-turbo',
-                messages,                
-                temperature: 0,
-                n: 1,
-                stop: '\n',
-            });
-
-            const config_axios = {
-                headers: {
-                    'Authorization': `Bearer ${this.apiKey}`,
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            const response = await axios.post(this.apiUrl, data_body_axios, config_axios);
-
-            // const response = await fetch(this.apiUrl, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': `Bearer ${this.apiKey}`,
-            //     },
-            //     body: JSON.stringify({
-            //         model: 'gpt-3.5-turbo',
-            //         messages,
-            //         // max_tokens: 50,
-            //         temperature: 0,
-            //         n: 1,
-            //         stop: '\n',
-            //     }),
+            // const data_body_axios = JSON.stringify({
+            //     model: 'gpt-3.5-turbo',
+            //     messages,                
+            //     temperature: 0,
+            //     n: 1,
+            //     stop: '\n',
             // });
 
-            // const data = await response.json();
+            // const config_axios = {
+            //     headers: {
+            //         'Authorization': `Bearer ${this.apiKey}`,
+            //         'Content-Type': 'application/json'
+            //     }
+            // };
+
+            // const response = await axios.post(this.apiUrl, data_body_axios, config_axios);
+
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages,
+                    // max_tokens: 50,
+                    temperature: 0,
+                    n: 1,
+                    stop: '\n',
+                }),
+            });
+
+            const data = await response.json();
 
             
-            const data = response.data;
-            console.log('data ==== api', data);
+            // const data = response.data;
+            // console.log('data ==== api', data);
             let rptModel = data.choices[0].message.content.trim(); 
             rptModel = rptModel.replace(this.rolResponde+'=', '');
             return rptModel;
@@ -122,22 +122,25 @@ export class ChatGPT {
 
         const previousResponse = this.checkPreviousResponse(prompt);
         if (previousResponse) {            
-            this.conversationLog.push(previousResponse);
-            this.infoPedido.setConversationLog(this.conversationLog);
+            // this.conversationLog.push(previousResponse);
+            this.setRowConversationLog(previousResponse)
+            // this.infoPedido.setConversationLog(this.conversationLog);
 
             return previousResponse;
         }
 
-        this.conversationLog.push(`${this.rolResponde}=${response}`);
-        this.infoPedido.setConversationLog(this.conversationLog);
+        // this.conversationLog.push(`${this.rolResponde}=${response}`);
+        this.setRowConversationLog(`${this.rolResponde}=${response}`);
+        // this.infoPedido.setConversationLog(this.conversationLog);
 
         return response;
     }
 
     public async sendMessage(userInput: string): Promise<string> {
         //console.log('userInput envio', userInput);
-        this.conversationLog.push(`${this.rolEnvia}=${userInput}`);
-        this.infoPedido.setConversationLog(this.conversationLog);
+        // this.conversationLog.push(`${this.rolEnvia}=${userInput}`);
+        this.setRowConversationLog(`${this.rolEnvia}=${userInput}`);
+        // this.infoPedido.setConversationLog(this.conversationLog);
 
         const response = await this.respond(userInput);
         // console.log('response responde', response);
@@ -147,8 +150,9 @@ export class ChatGPT {
 
     public async sendPrompt(prompt: string): Promise<string> {
         // console.log('prompt envio', prompt);
-        this.conversationLog.push(prompt);
-        this.infoPedido.setConversationLog(this.conversationLog);
+        // this.conversationLog.push(prompt);
+        this.setRowConversationLog(prompt);
+        // this.infoPedido.setConversationLog(this.conversationLog);
 
         const response = await this.respond(prompt, 'system');
         //this.conversationLog.push(`${this.rolResponde}=${response}`);
@@ -158,8 +162,9 @@ export class ChatGPT {
     }
 
     public setRowConversationLog(row: string): void {
-        this.conversationLog.push(row);
+        this.conversationLog.push(row);        
         this.infoPedido.setConversationLog(this.conversationLog);
+        console.log('Conversacion == ', this.conversationLog);
     }
 
     public getConversationLog(): string[] {

@@ -1,5 +1,5 @@
 import { addKeyword, EVENTS } from "@bot-whatsapp/bot";
-import { getCartaEstablecimiento, getListCartaHorariosAtencion } from "../controllers/api.restobar";
+import { getCartaEstablecimiento, getListCartaHorariosAtencion, postDataClienteBot } from "../controllers/api.restobar";
 import { capitalize, cleanText, convertirHora12hrs, delay, getItemCartaActiva, handlerAI } from "../services/utiles";
 import { flowInstrucciones } from "./flowInstrucciones";
 import { PROMPTS } from "../prompts/prompts";
@@ -112,8 +112,13 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             if (isShowCarta) {                
                 await sock.sendMessage(jid, { text: 'Un momento porfavor, le estoy adjuntando la carta ...🕑' })
             } else {                                
-                await sock.sendMessage(jid, { text: 'Ok, un momento por favor...🕑' })            }          
+                await sock.sendMessage(jid, { text: 'Ok, un momento por favor...🕑' })
+                
+            }          
             
+            await sock.presenceSubscribe(jid)
+            await sock.sendPresenceUpdate('composing', jid)
+
             // cartas activas segun la hora
             _listCartasActivas = getItemCartaActiva(_listaCartaHorarios)
             isCartaActiva = _listCartasActivas.length === 0 ? false : true            
@@ -217,7 +222,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                     infoFlowPedido.isWaitResponse = false
                     guadarInfoDataBase(infoPedido, infoFlowPedido, ctx.from)
                     return await flowDynamic('Ok')
-                }
+                } 
             }
             
             // enviamos la respuesta del usuario
@@ -225,6 +230,15 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             //console.log('¿infoPedido', infoPedido);
            // console.log('infoPedido 225', infoPedido.getConversationLog());
             let chatGpt = new ChatGPT('mesero', 'cliente', infoPedido) 
+
+            // si desea agregar el pedido luego que se le pida confirmar
+            if (infoFlowPedido.isWaitConfirmar) {
+                infoFlowPedido.isWaitConfirmar = false
+                const _nomPlatosEncontradosPedido = infoFlowPedido.platosEcontrados.map(item => `${item.cantidad_seleccionada} ${item.des}`)
+                guadarInfoDataBase(infoPedido, infoFlowPedido, ctx.from)
+                chatGpt.setRowConversationLog(`mesero=ok, ¿desea agregar algo mas a su pedido? pedido=${_nomPlatosEncontradosPedido.join(',').toLowerCase().trim()}`)
+            }
+
             let modelResponse = await chatGpt.sendMessage(userResponse)        
             
             //console.log("userResponse", userResponse)
@@ -265,10 +279,13 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                 { op: 4, resp: 'confirmar.' },
                 { op: 4, resp: 'confirmar_pedido' },
                 { op: 4, resp: 'confirmar_pedido.' },
+                { op: 5, resp: 'no_entendido' },
+                { op: 5, resp: 'no_entendido.' },
             ]
 
             const opSelected = posibleRespuesta.find(item => modelResponse.includes(item.resp))
-            //console.log('opSelected', opSelected);
+            console.log('modelResponse', modelResponse);
+            console.log('opSelected', opSelected);
             if (opSelected === undefined) {
                 
                 // infoPedido.setVariablesFlowPedido(infoFlowPedido)
@@ -309,7 +326,34 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                     chatGpt.setRowConversationLog(`mesero=escriba confirmar, para enviar su pedido. O desea agregar algo mas?`)
                     // return await fallBack(rptReturn);
                     break;
+                case 5: // no entendi lo que dijo el cliente
+                    rptReturn = 'No entendí su respuesta, verifique la ortografía y vuelva a escribirlo.'
+                    chatGpt.setRowConversationLog(`mesero=${rptReturn}`)
+                    infoFlowPedido.intentosEntederPedido += 1
+                    
+                    break;
             }      
+
+            // envia a la tienda en linea
+            if (infoFlowPedido.intentosEntederPedido > 3) {
+
+                                
+                const _idHistory = generateRowConversacionBotCliente(infoPedido)
+                console.log('_idHistory', _idHistory);
+
+                // const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}?bot=${_idHistory}`
+                const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}`
+                infoFlowPedido.isWaitResponse = false
+                rptReturn = '😔 *Lo siento, no lo pude entender*\nAdjunto el link de nuestra tienda en linea para que pueda realizar su pedido\n' + _linkTienda 
+                infoFlowPedido.isWaitConfirmar = false
+                infoFlowPedido.intentosEntederPedido = 0
+                // return await fallBack(rptReturn);
+                
+
+                database.update(ctx.from, infoPedido)                
+
+                return await endFlow(rptReturn)
+            }
             
             // await delay(4000)
 
@@ -401,6 +445,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
         }
         
         if (platosNoEcontrados.length > 0) { 
+            infoPedido.intentosEntederPedido += 1
             rpt += `No encontré los siguientes platos:\n*${platosNoEcontrados.join('\n')}*\n\nPor favor, verifique la ortografía y vuelva a escribirlo.`
         }
 
@@ -414,6 +459,23 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
         // guardamos en database
         infoPedido.setVariablesFlowPedido(infoFlowConfirma)
         database.update(ctxFrom, infoPedido)
+    }
+
+    function generateRowConversacionBotCliente(infoPedido) {
+        const _cliente = infoPedido.getCliente()
+        const clienteInfo = new ClassCliente()
+        clienteInfo.setCliente(_cliente)
+        const payload = {
+            idcliente: clienteInfo.getIdCliente() || 0,
+            telefono: clienteInfo.getCelular(),
+            idsede: infoSede.getSede().idsede,
+        }
+
+        console.log('payload', payload);
+
+        const _idHistory = postDataClienteBot(payload)
+
+        return _idHistory
     }
 }    
 

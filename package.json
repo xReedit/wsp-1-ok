@@ -12,7 +12,8 @@
     "nodemon": "^2.0.22",
     "socket.io": "^4.6.2",
     "sqlite3": "^5.1.6",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.0"
   },
   "name": "api-piter-chat-bot",
   "version": "1.0.0",
