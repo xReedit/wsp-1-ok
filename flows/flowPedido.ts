@@ -341,8 +341,8 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                 const _idHistory = generateRowConversacionBotCliente(infoPedido)
                 console.log('_idHistory', _idHistory);
 
-                // const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}?bot=${_idHistory}`
-                const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}`
+                const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}?bot=${_idHistory}`
+                // const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}`
                 infoFlowPedido.isWaitResponse = false
                 rptReturn = '😔 *Lo siento, no lo pude entender*\nAdjunto el link de nuestra tienda en linea para que pueda realizar su pedido\n' + _linkTienda 
                 infoFlowPedido.isWaitConfirmar = false
