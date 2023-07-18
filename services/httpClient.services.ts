@@ -178,8 +178,8 @@ export const postDataPedidoBot = async (controller: string, event: string, paylo
          const response = await axios.post(url, payload);
          return response.data;
      } catch (error) {
-    //     console.error(error);
-         throw new Error('Error al enviar los datos');
+         console.error('Error al enviar los datos');
+        //  throw new Error('Error al enviar los datos');
      }
 }
 

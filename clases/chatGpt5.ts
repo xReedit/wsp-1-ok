@@ -164,7 +164,7 @@ export class ChatGPT {
     public setRowConversationLog(row: string): void {
         this.conversationLog.push(row);        
         this.infoPedido.setConversationLog(this.conversationLog);
-        console.log('Conversacion == ', this.conversationLog);
+        // console.log('Conversacion == ', this.conversationLog);
     }
 
     public getConversationLog(): string[] {

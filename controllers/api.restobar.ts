@@ -2,6 +2,7 @@
 //@ts-ignore
 
 import { ClassCliente } from "../clases/cliente"
+import { ClassInformacionPedido } from "../clases/info.pedido.class";
 import { getData, postDataBot } from "../services/httpClient.services"
 // import { soundex } from "../services/soundex"
 import { capitalize } from "../services/utiles"
@@ -107,4 +108,29 @@ export const postDataClienteBot = (payload: any) => {
 function generarIdUnico() {
     const id = uuidv4().replace(/-/g, ''); // Genera un UUID v4 y elimina los guiones
     return id;
+}
+
+
+export function enviarClienteTiendaLinea(infoPedido: ClassInformacionPedido, idsede: number, link_tienda, url_tienda_linea: string) {
+    const _idHistory = generateRowConversacionBotCliente(infoPedido, idsede)
+    const _linkTienda = `${url_tienda_linea}${link_tienda}?bot=${_idHistory}`
+    // const _linkTienda = `${url_tienda_linea}${link_tienda}`
+    
+    return '😔 *Lo siento, no lo pude entender*\nAdjunto el link de *nuestro canal autoservicio* (tienda en linea) para que pueda realizar su pedido\n' + _linkTienda;
+}
+
+function generateRowConversacionBotCliente(infoPedido: ClassInformacionPedido, idsede: number) {
+    const _cliente = infoPedido.getCliente()
+    const clienteInfo = new ClassCliente()
+    clienteInfo.setCliente(_cliente)
+    const payload = {
+        idcliente: clienteInfo.getIdCliente() || 0,
+        telefono: clienteInfo.getCelular(),
+        idsede: idsede
+    }
+
+
+    const _idHistory = postDataClienteBot(payload)
+
+    return _idHistory
 }

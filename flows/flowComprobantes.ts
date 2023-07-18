@@ -16,7 +16,7 @@ export const flowComprobante = (infoSede: any) => {
     }
     
 
-    return addKeyword(['3', 'comprobante', 'reenviar comprobante'])
+    return addKeyword(['4', 'comprobante', 'reenviar comprobante'])
     .addAnswer([
         '📃 Para poder encontrar el comprobante:',
         'Por favor digame el *ruc* o *dni* del cliente -a quien fue emitido-'        

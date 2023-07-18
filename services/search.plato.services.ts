@@ -214,7 +214,7 @@ function segundaBusqueda(platosBuscar: any[], lista: any[], encontrados: any) {
 
 function cocinarPeticionCliente(pedidoCliente: any) {
 
-    console.log('pedidoCliente', pedidoCliente);
+    // console.log('pedidoCliente', pedidoCliente);
     if (pedidoCliente === undefined || pedidoCliente === null) {
         return false
     }

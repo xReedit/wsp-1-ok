@@ -13,8 +13,7 @@ export class ClassGetSubTotales {
 
     // obtner las reglas de la carta
     async getRules(idsede, idorg) {
-        this.arrReglasCarta = await getData('chat-bot', `get-reglas-carta/${idsede}/${idorg}`)
-        console.log('this.arrReglasCarta', this.arrReglasCarta);
+        this.arrReglasCarta = await getData('chat-bot', `get-reglas-carta/${idsede}/${idorg}`)        
     }
 
     setRules(arrReglasCarta: any) {

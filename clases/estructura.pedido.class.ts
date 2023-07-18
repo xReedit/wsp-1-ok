@@ -1,4 +1,3 @@
-import { info } from "console";
 import { ClassGetSubTotales } from "../services/getSubtotal";
 import { postDataPedidoBot } from "../services/httpClient.services";
 import { JsonPrintService } from "../services/json-print.services";
@@ -262,6 +261,7 @@ export class ClassEstructuraPedido {
 
         postDataPedidoBot('bot', 'send-bot-pedido', _payload)
     }
+
     
 
 }

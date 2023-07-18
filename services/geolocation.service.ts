@@ -58,7 +58,7 @@ export class GeolocationServices {
         }
 
         const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(direccion)}&key=${this.apiKey}`;
-        console.log('url direccion buscar', url);
+        // console.log('url direccion buscar', url);
 
         try {
             const response = await axios.get(url);

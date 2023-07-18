@@ -126,8 +126,10 @@ export class SqliteDatabase {
     async getInfoPedido(id: string): Promise<ClassInformacionPedido> {
         let infoPedido = new ClassInformacionPedido()
         const _infoPedido = <ClassInformacionPedido>await this.get(id)
-        infoPedido.setInfoPedidoFromSql(_infoPedido)
-
+        if (_infoPedido ) {
+            infoPedido.setInfoPedidoFromSql(_infoPedido)
+        }
+        
         return infoPedido;        
     }
 }

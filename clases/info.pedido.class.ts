@@ -1,10 +1,9 @@
-import { postDataPedidoBot } from "../services/httpClient.services";
 import { ClassCliente } from "./cliente";
 
 interface EstructuraInformacion {    
         sede: any;
         cliente: ClassCliente;
-        pedido_cliente: {}   
+        pedido_cliente: any   
         subtotalCostoEntrega: null
         isDelivery: boolean;
         isReserva: boolean;
@@ -46,7 +45,7 @@ export class ClassInformacionPedido {
                     platosRecomendados: [],
                     isWaitResponse: false,
                     isWaitConfirmar: false,
-                    intentosEntederPedido: 0
+                    intentosEntederPedido: 0                    
                 },
                 variables_flow_confirmar_pedido: {
                     isRecopilandoDatos: false,
@@ -102,6 +101,10 @@ export class ClassInformacionPedido {
 
     public setPedidoCliente(pedido_cliente: any) {
         this.estructuraInfo.pedido_cliente = pedido_cliente;
+    }
+
+    public getIsHasPedidoCliente(): any {
+        return this.estructuraInfo.pedido_cliente.length > 0;
     }
 
     public getInfoPedido(): EstructuraInformacion {
@@ -248,7 +251,7 @@ export class ClassInformacionPedido {
                 platosRecomendados: [],
                 isWaitResponse: false,
                 isWaitConfirmar: false,
-                intentosEntederPedido: 0
+                intentosEntederPedido: 0                
             },
             variables_flow_confirmar_pedido: {
                 isRecopilandoDatos: false,
@@ -264,6 +267,8 @@ export class ClassInformacionPedido {
             conversationLog: []
         };
     }
+
+    
 
 
 }

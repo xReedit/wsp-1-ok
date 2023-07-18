@@ -1,18 +1,12 @@
 import { addKeyword, EVENTS } from "@bot-whatsapp/bot";
-import { getCartaEstablecimiento, getListCartaHorariosAtencion, postDataClienteBot } from "../controllers/api.restobar";
-import { capitalize, cleanText, convertirHora12hrs, delay, getItemCartaActiva, handlerAI } from "../services/utiles";
-import { flowInstrucciones } from "./flowInstrucciones";
+import { enviarClienteTiendaLinea, getCartaEstablecimiento, postDataClienteBot } from "../controllers/api.restobar";
+import { capitalize, convertirHora12hrs, delay, getItemCartaActiva, handlerAI } from "../services/utiles";
 import { PROMPTS } from "../prompts/prompts";
 import { ChatGPT } from "../clases/chatGpt5";
-import { getData, postData } from "../services/httpClient.services";
 import { buscarCoincidencias, consularLoQueHay, consultarPlato, insertarPlatosEnSeccion } from "../services/search.plato.services";
-// import { flowConfirmaPedido } from "./flowConfirmaPedido";
 import { ClassCliente } from "../clases/cliente";
 import { ClassInformacionPedido } from "../clases/info.pedido.class";
-// import { config } from "../config";
 
-// import dotenv from 'dotenv';
-// dotenv.config();
 
 import endpoint from '../endpoints.config';
 import { SqliteDatabase } from "../services/sqlite.services";
@@ -38,7 +32,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
     
     let infoSede: ClassInfoSede = _infoSede
     
-    return addKeyword(['1', '2', EVENTS.VOICE_NOTE])  
+    return addKeyword(['1', '2', '3', EVENTS.VOICE_NOTE])  
     //.addAction(
       //  async () => {
             // reset de variables
@@ -62,18 +56,16 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
           //  capture: true
         //},
         async (ctx, { endFlow, flowDynamic, provider }) => {            
-           
-
+                       
             let infoPedido = new ClassInformacionPedido()
             infoPedido = await database.getInfoPedido(ctx.from)
 
             let infoFlowPedido = infoPedido.getVariablesFlowPedido()
 
-            // if (!infoFlowPedido.isWaitResponse) {
-            //     return;
-            // }
-
+      
             let rptUser = ctx.body.toLowerCase().trim()
+
+            
             let isShowCarta = false
             let isCartaActiva = false
 
@@ -100,7 +92,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             infoFlowPedido.isWaitResponse = true            
                         
             // mostrar carta
-            if (['1', '2'].includes(rptUser) === false) {
+            if (['1', '2', '3'].includes(rptUser) === false) {
                 await sock.sendMessage(jid, { text: 'No entendí su respuesta, lo tomare como un *si* 🙃' })                
             }
 
@@ -284,8 +276,8 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             ]
 
             const opSelected = posibleRespuesta.find(item => modelResponse.includes(item.resp))
-            console.log('modelResponse', modelResponse);
-            console.log('opSelected', opSelected);
+            // console.log('modelResponse', modelResponse);
+            // console.log('opSelected', opSelected);
             if (opSelected === undefined) {
                 
                 // infoPedido.setVariablesFlowPedido(infoFlowPedido)
@@ -309,7 +301,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
                     break;                
                 case 2: 
                     // el cliente solicita la carta, lo adjuntamos
-                    console.log('adjuntar carta');
+                    // console.log('adjuntar carta');
                     rptReturn='Ya le adjunte'                    
                     await sock.sendMessage(jid, { text: 'Ok, estoy adjuntado la carta 📎' })
                     adjuntarCarta(sock, jid)                  
@@ -337,14 +329,18 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             // envia a la tienda en linea
             if (infoFlowPedido.intentosEntederPedido > 3) {
 
+                
                                 
-                const _idHistory = generateRowConversacionBotCliente(infoPedido)
-                console.log('_idHistory', _idHistory);
+                // const _idHistory = generateRowConversacionBotCliente(infoPedido)
+                // console.log('_idHistory', _idHistory);
 
                 // const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}?bot=${_idHistory}`
-                const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}`
-                infoFlowPedido.isWaitResponse = false
-                rptReturn = '😔 *Lo siento, no lo pude entender*\nAdjunto el link de nuestra tienda en linea para que pueda realizar su pedido\n' + _linkTienda 
+                // const _linkTienda = `${endpoint.url_tienda_linea}${infoSede.getLinkCarta()}`
+                // infoFlowPedido.isWaitResponse = false
+                // rptReturn = '😔 *Lo siento, no lo pude entender*\nAdjunto el link de nuestra tienda en linea para que pueda realizar su pedido\n' + _linkTienda 
+
+                rptReturn = enviarClienteTiendaLinea(infoPedido, infoSede.getSede().idsede, infoSede.getLinkCarta(), endpoint.url_tienda_linea)
+
                 infoFlowPedido.isWaitConfirmar = false
                 infoFlowPedido.intentosEntederPedido = 0
                 // return await fallBack(rptReturn);
@@ -461,21 +457,20 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
         database.update(ctxFrom, infoPedido)
     }
 
-    function generateRowConversacionBotCliente(infoPedido) {
-        const _cliente = infoPedido.getCliente()
-        const clienteInfo = new ClassCliente()
-        clienteInfo.setCliente(_cliente)
-        const payload = {
-            idcliente: clienteInfo.getIdCliente() || 0,
-            telefono: clienteInfo.getCelular(),
-            idsede: infoSede.getSede().idsede            
-        }
+    // function generateRowConversacionBotCliente(infoPedido) {
+    //     const _cliente = infoPedido.getCliente()
+    //     const clienteInfo = new ClassCliente()
+    //     clienteInfo.setCliente(_cliente)
+    //     const payload = {
+    //         idcliente: clienteInfo.getIdCliente() || 0,
+    //         telefono: clienteInfo.getCelular(),
+    //         idsede: infoSede.getSede().idsede            
+    //     }
 
-        console.log('payload', payload);
 
-        const _idHistory = postDataClienteBot(payload)
+    //     const _idHistory = postDataClienteBot(payload)
 
-        return _idHistory
-    }
+    //     return _idHistory
+    // }
 }    
 

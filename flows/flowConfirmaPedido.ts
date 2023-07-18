@@ -9,6 +9,8 @@ import { ClassEstructuraPedido } from "../clases/estructura.pedido.class";
 import { GeolocationServices } from "../services/geolocation.service";
 import { ClassInfoSede } from "../clases/sede";
 import { SqliteDatabase } from "../services/sqlite.services";
+import { flowInstrucciones } from "./flowInstrucciones";
+import { flowPedido } from "./flowPedido";
 
 
 // entra en accion cuando el cliente confirma el pedido
@@ -16,32 +18,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
     let _infoSede = infoSede.getSede()
     let listCanalesConsumo = infoSede.getlistCanalConsumo()
     let listTipoPago = infoSede.getlistTipoPago()
-
     
-    // let listTipoPago = infoPedido.getlistTipoPago()
-    // const infoSede = infoPedido.getSede()
-    // let tileAddAnswerDatosfaltantes = ''
-    // let datosFaltantes = []
-    // let canalConsumoSeleted = null
-    // let datosRecopiladosDelCliente: any = {}    
-    // let keyDatoFalta = ''
-
-    
-    // let chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente')
-    // let isRecopilandoDatos = false
-    // let isClienteConfirmaDireccion = false
-    // let isClienteEligeListDireccion = false
-    // let isCuantoPagara = false
-    // let tipoPagoSeleted: any = {}
-    // let isCanalDelivery = false;
-    // let isCanalReserva = false;
-    // let preguntaSiDeseaCubiertos = false
-    // let _totalPagarMsj = ''
-    // let preguntaSiEstaConformeOk = false
-
-
-    // configuramos el chatgpt
-    // let chatGptConfirmaPedido: ChatGPT // = new ChatGPT('asistente', 'cliente')    
     
     const geolocationServices = new GeolocationServices()
     // let _listDireccionesShow: any;
@@ -76,12 +53,15 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
 
     return addKeyword(['confirmar', 'confirmo', 'confirmado', 'confirma', 'confirm', EVENTS.LOCATION, EVENTS.VOICE_NOTE])    
     .addAction(
-        async () => {            
-            // try {                
-            //     chatGptConfirmaPedido.clearConversationLog()
-            // } catch (error) {
-                
-            // }
+        async (ctx, {gotoFlow}) => {            
+            // chequeamos si el cliente hizo su pedido
+            let infoPedido = new ClassInformacionPedido()
+            infoPedido = await database.getInfoPedido(ctx.from)
+
+            if ( !infoPedido.getIsHasPedidoCliente() ) {
+                return await gotoFlow(flowPedido(infoSede, database))
+            }
+
         }
     )
     .addAnswer([
@@ -191,7 +171,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                     return await fallBack(modelResponse);
                 } else {
                     let _datosRecopiladosDelCliente = modelResponse.split('respuesta=')[1]
-                    console.log('respuesta completa = ', _datosRecopiladosDelCliente);
+                    // console.log('respuesta completa = ', _datosRecopiladosDelCliente);
                     const _datosRecopiladosDelClienteJSON = JSON.parse(_datosRecopiladosDelCliente)
                     infoFlowConfirma.datosRecopiladosDelCliente = _datosRecopiladosDelClienteJSON                    
 
@@ -220,7 +200,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                         let direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(_datosRecopiladosDelClienteJSON.direccion, _confgDelivery.ciudades)                        
 
                         if (!direccionClienteSeletedCoordenadas ) {
-                            const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida.'
+                            const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida, o envíe su ubicación.'
                             chatGptConfirmaPedido.setRowConversationLog(`asisente=${_rptMsj}`) 
                             
                             guadarInfoDataBase(infoPedido, infoFlowConfirma, ctx.from)
@@ -593,7 +573,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
 
         // console.log('direccionOCoordenadasCliente', direccionOCoordenadasCliente);
         if (!direccionClienteSeletedCoordenadas) {
-            const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida.'
+            const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida, o envíe su ubicación.'
             
             // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
             chatGptConfirmaPedido.setRowConversationLog(`asisente=${_rptMsj}`)
