@@ -19,7 +19,7 @@ export const flowPrincipal = (infoSede: ClassInfoSede, database: SqliteDatabase)
 
     // let _flowTest2 = new FlowTest2(database)
 
-    const optionsSeletec =`👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n*3*  📃 para reenviarte un comprobante`
+    const optionsSeletec =`👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n'*3*  🔍 para preguntar stock'\n*4*  📃 para reenviarte un comprobante`
 
     return addKeyword(['hola', 'Buenas', 'Buen dia', 'Buenos', 'ola', 'beunas'])
     .addAnswer('🤖 Hola, soy Piter su asistente virtual.')
