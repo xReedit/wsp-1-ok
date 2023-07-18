@@ -20,9 +20,10 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
 
     // indica si estamos atentos al pedido del cliente
     let url_img_carta = endpoint.url_img_carta
-    let mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
+    let mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato:\n*cantidad nombre del prodocuto (indiciaciones)*\n'
     let _listCartasActivas = []
     let cartaEstablecimiento: any = []
+    let msjFormatoPedido = `De prefencia en una sola línea y en este formato:\n*cantidad nombre_del_producto(indiciaciones)*\nPor ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*`
 
 
     // let infoPedido = new ClassInformacionPedido()
@@ -119,7 +120,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             // showTomarPedido = true
             infoFlowPedido.showTomarPedido = true            
 
-            mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato, ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*'
+            mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\n' + msjFormatoPedido
 
             // no hay carta disponible
             if (!isCartaActiva) {                
@@ -442,7 +443,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
         
         if (platosNoEcontrados.length > 0) { 
             infoPedido.intentosEntederPedido += 1
-            rpt += `No encontré los siguientes platos:\n*${platosNoEcontrados.join('\n')}*\n\nPor favor, verifique la ortografía y vuelva a escribirlo.`
+            rpt += `No encontré los siguientes platos:\n*${platosNoEcontrados.join('\n')}*\n\nPor favor, verifique la ortografía y vuelva a escribirlo.\n${msjFormatoPedido}`
         }
 
         // guardamos en database
