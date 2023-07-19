@@ -145,8 +145,8 @@ export function obtenerHoraActualPorZonaHoraria(timeZone: string = 'America/Lima
     return horaActual;
 }
 
-export function obtenerFechaHoraPorZonaHoraria(timeZone: string = 'America/Lima'): Date {
-    const fechaHoraActual = new Date().toLocaleString('en-US', { timeZone });
+export function obtenerFechaHoraPorZonaHoraria(_timeZone: string = 'America/Lima'): Date {
+    const fechaHoraActual = new Date().toLocaleString('en-US', { timeZone: _timeZone });
     const fechaHoraZonaHoraria = new Date(fechaHoraActual);    
 
     return fechaHoraZonaHoraria;
