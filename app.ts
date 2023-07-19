@@ -3,6 +3,7 @@ import { createServer } from "http";
 import { Server } from 'socket.io';
 import cors from 'cors'; 
 import socketsConnect  from './controllers/socket';
+import { obtenerFechaHoraPorZonaHoraria } from './services/utiles';
 // import { config } from './config';
 
 // import 'dotenv/config'
@@ -67,6 +68,4 @@ httpServer.listen(PORT, () => {
 
 exports = app;
 
-function obtenerFechaHoraPorZonaHoraria() {
-    throw new Error('Function not implemented.');
-}
+
