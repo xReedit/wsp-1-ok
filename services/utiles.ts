@@ -141,21 +141,30 @@ export function obtenerClavesSinDatos(objeto) {
 export function obtenerHoraActualPorZonaHoraria(_timeZone: string = 'America/Lima'): Date {
     const fechaActual = new Date().toLocaleString('en-US', { timeZone: _timeZone });    
     const [fecha, hora] = fechaActual.split(', ');
-    const [mes, dia, anio] = fecha.split('/');
-    const [horaParte, minutosParte, segundosParte] = hora.split(':');
-    const horaActual = new Date(Number(anio), Number(mes) - 1, Number(dia), Number(horaParte), Number(minutosParte), Number(segundosParte));
-    return horaActual;
+    console.log('¿fecha', fecha);
+    console.log('¿hora', hora);
+    const dateParts = fecha.split('/');
+    const formattedDate = `${dateParts[2]}-${dateParts[0].padStart(2, '0')}-${dateParts[1].padStart(2, '0')}`;
+    const stringDate = `${formattedDate} ${hora}`;
+    
+    // const [mes, dia, anio] = fecha.split('/');
+    // const [horaParte, minutosParte, segundosParte] = hora.split(':');
+    // const horaActual = new Date(Number(anio), Number(mes) - 1, Number(dia), Number(horaParte), Number(minutosParte), Number(segundosParte));
+
+    return new Date(stringDate);
 }
 
 export function obtenerFechaHoraPorZonaHoraria(_timeZone: string = 'America/Lima'): Date {
     const fechaHoraActual = new Date().toLocaleString('en-US', { timeZone: 'America/Lima' });    
     console.log('¿fechaHoraActual', fechaHoraActual);
-    const fechaHoraZonaHoraria = new Date(`'${fechaHoraActual}'`);    
+    const formattedDateString = fechaHoraActual.replace(/ /g, ' ');
+    console.log('formattedDateString', formattedDateString);
+    const fechaHoraZonaHoraria = new Date(formattedDateString);    
 
     return fechaHoraZonaHoraria;
 }
 
-export function obtenerFechaHoraPorZonaHoraria2(timeZone: string = 'UTC-5'): Date {
+export function obtenerFechaHoraPorZonaHoraria2(timeZone: string = 'America/Lima'): Date {
     const fechaHoraActual = DateTime.now().setZone(timeZone).toJSDate();
     console.log('¿fechaHoraActual', fechaHoraActual);
     return fechaHoraActual;

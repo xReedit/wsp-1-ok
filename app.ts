@@ -47,7 +47,7 @@ const database = new SqliteDatabase('database.sqlite');
 socketsConnect(io, database)
 
 
-const fechaActual = obtenerFechaHoraPorZonaHoraria2();
+const fechaActual = obtenerHoraActualPorZonaHoraria();
 console.log('fechaActual zona lima', fechaActual);
 
 const hora = fechaActual.getHours();
