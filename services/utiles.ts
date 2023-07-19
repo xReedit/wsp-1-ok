@@ -54,7 +54,7 @@ function obtenerSaludoSegunHora(): string {
 // a la funcion le pasare una lista de cartas y me devolvera una lista de cartas activas
 export const getItemCartaActiva = (listCarta: any) => {
     // const fechaActual = new Date();
-    const fechaActual = obtenerFechaHoraPorZonaHoraria();
+    const fechaActual = obtenerFechaHoraPorZonaHoraria2();
     const hora = fechaActual.getHours();
     const minutos = fechaActual.getMinutes();
 

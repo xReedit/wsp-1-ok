@@ -50,6 +50,13 @@ socketsConnect(io, database)
 const fechaActual = obtenerFechaHoraPorZonaHoraria2();
 console.log('fechaActual zona lima', fechaActual);
 
+const hora = fechaActual.getHours();
+const minutos = fechaActual.getMinutes();
+
+console.log('fechaActual', fechaActual);
+console.log('hora', hora);
+console.log('minutos', minutos);
+
 // io.on('connection', (socket: any) => {
 //     console.log('datos socket', socket.id);
 
