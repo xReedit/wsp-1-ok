@@ -51,11 +51,18 @@ function obtenerSaludoSegunHora(): string {
 // exportar funcion para determinar si una carta esta activa o no, segun el horario (hora_ini:string, hora_fin: string) hora_ini y hora_fin es un string con formato de hora 24 horas
 // a la funcion le pasare una lista de cartas y me devolvera una lista de cartas activas
 export const getItemCartaActiva = (listCarta: any) => {
-    const fechaActual = new Date();
+    // const fechaActual = new Date();
+    const fechaActual = obtenerFechaHoraPorZonaHoraria();
     const hora = fechaActual.getHours();
     const minutos = fechaActual.getMinutes();
 
+    // console.log('fechaActual', fechaActual);
+    // console.log('hora', hora);
+    // console.log('minutos', minutos);
+
     const horaActual = new Date(`2023-01-01 ${hora}:${minutos}:00`)
+
+    // console.log('horaActual', horaActual);
 
     let listpt = []
     listCarta.filter((item) => {
@@ -123,6 +130,22 @@ export function obtenerClavesSinDatos(objeto) {
     }
 
     return clavesSinDatos;
+}
+
+export function obtenerHoraActualPorZonaHoraria(timeZone: string = 'America/Lima'): Date {
+    const fechaActual = new Date().toLocaleString('en-US', { timeZone });    
+    const [fecha, hora] = fechaActual.split(', ');
+    const [mes, dia, anio] = fecha.split('/');
+    const [horaParte, minutosParte, segundosParte] = hora.split(':');
+    const horaActual = new Date(Number(anio), Number(mes) - 1, Number(dia), Number(horaParte), Number(minutosParte), Number(segundosParte));
+    return horaActual;
+}
+
+function obtenerFechaHoraPorZonaHoraria(timeZone: string = 'America/Lima'): Date {
+    const fechaHoraActual = new Date().toLocaleString('en-US', { timeZone });
+    const fechaHoraZonaHoraria = new Date(fechaHoraActual);    
+
+    return fechaHoraZonaHoraria;
 }
 
 

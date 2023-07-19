@@ -2,15 +2,15 @@
   key: {
     remoteJid: '51934746830@s.whatsapp.net',
     fromMe: false,
-    id: '3EB0A3D25FC07F8ECDE7A7',
+    id: '3EB0F58888618B2BC01670',
     participant: undefined
   },
-  messageTimestamp: 1689698998,
+  messageTimestamp: 1689738169,
   pushName: 'Papaya Express',
   broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: 'hola',
+      text: 'asasa',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -19,22 +19,22 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: 'hola',
+  body: 'asasa',
   from: '51934746830'
 }
 [handleMsg]:  {
   key: {
     remoteJid: '51934746830@s.whatsapp.net',
     fromMe: false,
-    id: '3EB00BFD5308D36C2B6922',
+    id: '3EB0F207FBDF0A7E6BDDCD',
     participant: undefined
   },
-  messageTimestamp: 1689699012,
+  messageTimestamp: 1689738172,
   pushName: 'Papaya Express',
   broadcast: false,
   message: Message {
     extendedTextMessage: ExtendedTextMessage {
-      text: '1',
+      text: 'wqewqewq}',
       contextInfo: [ContextInfo],
       inviteLinkGroupTypeV2: 0
     },
@@ -43,113 +43,17 @@
       deviceListMetadataVersion: 2
     }
   },
-  body: '1',
+  body: 'wqewqewq}',
   from: '51934746830'
 }
 [handleMsg]:  {
   key: {
     remoteJid: '51934746830@s.whatsapp.net',
     fromMe: false,
-    id: '3EB0CDA2BD9F059A8139E5',
+    id: '3EB0983175C7CA037CF6F2',
     participant: undefined
   },
-  messageTimestamp: 1689699020,
-  pushName: 'Papaya Express',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage {
-      text: '2 arroz con pollo',
-      contextInfo: [ContextInfo],
-      inviteLinkGroupTypeV2: 0
-    },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: '2 arroz con pollo',
-  from: '51934746830'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '51934746830@s.whatsapp.net',
-    fromMe: false,
-    id: '3EB007D78FE47515DF88B1',
-    participant: undefined
-  },
-  messageTimestamp: 1689699029,
-  pushName: 'Papaya Express',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage {
-      text: '2 arroz con pato',
-      contextInfo: [ContextInfo],
-      inviteLinkGroupTypeV2: 0
-    },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: '2 arroz con pato',
-  from: '51934746830'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '51934746830@s.whatsapp.net',
-    fromMe: false,
-    id: '3EB04BF293F7ED9F66BBD0',
-    participant: undefined
-  },
-  messageTimestamp: 1689699033,
-  pushName: 'Papaya Express',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage {
-      text: 'no}',
-      contextInfo: [ContextInfo],
-      inviteLinkGroupTypeV2: 0
-    },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: 'no}',
-  from: '51934746830'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '51934746830@s.whatsapp.net',
-    fromMe: false,
-    id: '3EB0F22E80C4122367BC23',
-    participant: undefined
-  },
-  messageTimestamp: 1689699041,
-  pushName: 'Papaya Express',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage {
-      text: 'confirmar',
-      contextInfo: [ContextInfo],
-      inviteLinkGroupTypeV2: 0
-    },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: 'confirmar',
-  from: '51934746830'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '51934746830@s.whatsapp.net',
-    fromMe: false,
-    id: '3EB0FBA635EA04115B7CB5',
-    participant: undefined
-  },
-  messageTimestamp: 1689699043,
+  messageTimestamp: 1689738185,
   pushName: 'Papaya Express',
   broadcast: false,
   message: Message {

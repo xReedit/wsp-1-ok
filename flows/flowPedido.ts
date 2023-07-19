@@ -20,10 +20,10 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
 
     // indica si estamos atentos al pedido del cliente
     let url_img_carta = endpoint.url_img_carta
-    let mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato:\n*cantidad nombre del prodocuto (indiciaciones)*\n'
     let _listCartasActivas = []
     let cartaEstablecimiento: any = []
-    let msjFormatoPedido = `De prefencia en una sola línea y en este formato:\n*cantidad nombre_del_producto(indiciaciones)*\nPor ejemplo:\n*2 ceviches(1 sin aji), 1 pollo al horno*`
+    let msjFormatoPedido = `De prefencia en una sola línea y en este formato:\n*cantidad nombre_del_producto(indiciaciones)*\nPor ejemplo:\nQuiero *2 ceviches(1 sin aji), 1 pollo al horno*`
+    let mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\n' + msjFormatoPedido
 
 
     // let infoPedido = new ClassInformacionPedido()

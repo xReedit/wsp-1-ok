@@ -21,7 +21,8 @@ export const flowPrincipal = (infoSede: ClassInfoSede, database: SqliteDatabase)
 
     const optionsSeletec =`👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n'*3*  🔍 para preguntar stock'\n*4*  📃 para reenviarte un comprobante`
 
-    return addKeyword(['hola', 'Buenas', 'Buen dia', 'Buenos', 'ola', 'beunas'])
+    // return addKeyword(['hola', 'Buenas', 'Buen dia', 'Buenos', 'ola', 'beunas'])
+    return addKeyword(EVENTS.WELCOME)
     .addAnswer('🤖 Hola, soy Piter su asistente virtual.')
     .addAction(
         async (ctx, { endFlow, flowDynamic, provider }) => {     
