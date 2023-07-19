@@ -46,7 +46,8 @@ const database = new SqliteDatabase('database.sqlite');
 socketsConnect(io, database)
 
 
-
+const fechaActual = obtenerFechaHoraPorZonaHoraria();
+console.log('fechaActual zona lima', fechaActual);
 
 // io.on('connection', (socket: any) => {
 //     console.log('datos socket', socket.id);
@@ -65,3 +66,7 @@ httpServer.listen(PORT, () => {
 });
 
 exports = app;
+
+function obtenerFechaHoraPorZonaHoraria() {
+    throw new Error('Function not implemented.');
+}

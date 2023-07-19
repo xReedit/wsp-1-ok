@@ -56,20 +56,24 @@ export const getItemCartaActiva = (listCarta: any) => {
     const hora = fechaActual.getHours();
     const minutos = fechaActual.getMinutes();
 
-    // console.log('fechaActual', fechaActual);
-    // console.log('hora', hora);
-    // console.log('minutos', minutos);
+    console.log('fechaActual', fechaActual);
+    console.log('hora', hora);
+    console.log('minutos', minutos);
 
     const horaActual = new Date(`2023-01-01 ${hora}:${minutos}:00`)
 
-    // console.log('horaActual', horaActual);
+    console.log('horaActual', horaActual);
 
     let listpt = []
     listCarta.filter((item) => {
         // convertir item.hora_ini y item.hora_fin de string a date, ejemplo '13:00' => '2021-01-01 13:00:00
         const _hora_ini = new Date(`2023-01-01 ${item.hora_ini}:00`)
         const _hora_fin = new Date(`2023-01-01 ${item.hora_fin}:00`)
+
+        console.log('_hora_ini comercio', _hora_ini);
+        console.log('_hora_fin comercio', _hora_fin);
         let isActivo = horaActual >= _hora_ini && horaActual <= _hora_fin
+        console.log('isActivo', isActivo);
 
         // si es activo tambien debe estar activo el dia, esto se debe hacer opteniendo el numero de dia de la semana
         // y compararlo con el campo  dia_disponible que es un string con los numeros de dia, ejemplo: dia_disponible = '1,2,3,4,5,6'
