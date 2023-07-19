@@ -157,6 +157,7 @@ export function obtenerFechaHoraPorZonaHoraria(_timeZone: string = 'America/Lima
 
 export function obtenerFechaHoraPorZonaHoraria2(timeZone: string = 'UTC-5'): Date {
     const fechaHoraActual = DateTime.now().setZone(timeZone).toJSDate();
+    console.log('¿fechaHoraActual', fechaHoraActual);
     return fechaHoraActual;
 }
 
