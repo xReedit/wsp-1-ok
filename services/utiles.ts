@@ -54,13 +54,16 @@ function obtenerSaludoSegunHora(): string {
 // a la funcion le pasare una lista de cartas y me devolvera una lista de cartas activas
 export const getItemCartaActiva = (listCarta: any) => {
     // const fechaActual = new Date();
-    const fechaActual = obtenerFechaHoraPorZonaHoraria2();
-    const hora = fechaActual.getHours();
-    const minutos = fechaActual.getMinutes();
+    // const fechaActual = obtenerFechaHoraPorZonaHoraria2();
+    // const hora = fechaActual.getHours();
+    // const minutos = fechaActual.getMinutes();
+
+    const { fechaActual, hora, minutos } = obtenerHoraMinutosPorZonaHoraria3('America/Lima');
 
     console.log('fechaActual', fechaActual);
     console.log('hora', hora);
     console.log('minutos', minutos);
+    
 
     const horaActual = new Date(`2023-01-01 ${hora}:${minutos}:00`)
 
@@ -171,6 +174,15 @@ export function obtenerFechaHoraPorZonaHoraria2(timeZone: string = 'America/Lima
     const fechaHoraActual = DateTime.now().setZone(timeZone).toJSDate();
     console.log('¿fechaHoraActual', fechaHoraActual);
     return fechaHoraActual;
+}
+
+export function obtenerHoraMinutosPorZonaHoraria3(timeZone: string): { fechaActual: Date, hora: number, minutos: number } {
+    const fechaHoraActual = DateTime.now().setZone(timeZone);
+    const fechaActual = fechaHoraActual.toJSDate();
+    const hora = fechaHoraActual.hour;
+    const minutos = fechaHoraActual.minute;
+
+    return { fechaActual, hora, minutos };
 }
 
 
