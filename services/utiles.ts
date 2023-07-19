@@ -141,11 +141,12 @@ export function obtenerClavesSinDatos(objeto) {
 export function obtenerHoraActualPorZonaHoraria(_timeZone: string = 'America/Lima'): Date {
     const fechaActual = new Date().toLocaleString('en-US', { timeZone: _timeZone });    
     const [fecha, hora] = fechaActual.split(', ');
+    const _hora = hora.split(' ')[0];
     console.log('¿fecha', fecha);
-    console.log('¿hora', hora);
+    console.log('¿hora', _hora);
     const dateParts = fecha.split('/');
     const formattedDate = `${dateParts[2]}-${dateParts[0].padStart(2, '0')}-${dateParts[1].padStart(2, '0')}`;
-    const stringDate = `${formattedDate} ${hora.split(' ')[0]}`;
+    const stringDate = `${formattedDate} ${_hora}`;
 
     console.log('stringDate', stringDate);
     
