@@ -7,6 +7,8 @@ import fs from 'node:fs/promises';
 
 // import { voiceToText } from './services/whisper';
 
+import { DateTime } from 'luxon';
+
 
 export const capitalize = (s: string) => {
     s = s.toLowerCase()
@@ -136,8 +138,8 @@ export function obtenerClavesSinDatos(objeto) {
     return clavesSinDatos;
 }
 
-export function obtenerHoraActualPorZonaHoraria(timeZone: string = 'America/Lima'): Date {
-    const fechaActual = new Date().toLocaleString('en-US', { timeZone });    
+export function obtenerHoraActualPorZonaHoraria(_timeZone: string = 'America/Lima'): Date {
+    const fechaActual = new Date().toLocaleString('en-US', { timeZone: _timeZone });    
     const [fecha, hora] = fechaActual.split(', ');
     const [mes, dia, anio] = fecha.split('/');
     const [horaParte, minutosParte, segundosParte] = hora.split(':');
@@ -150,6 +152,11 @@ export function obtenerFechaHoraPorZonaHoraria(_timeZone: string = 'America/Lima
     const fechaHoraZonaHoraria = new Date(fechaHoraActual);    
 
     return fechaHoraZonaHoraria;
+}
+
+export function obtenerFechaHoraPorZonaHoraria2(timeZone: string = 'America/Lima'): Date {
+    const fechaHoraActual = DateTime.now().setZone(timeZone).toJSDate();
+    return fechaHoraActual;
 }
 
 

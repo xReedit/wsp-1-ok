@@ -3,7 +3,7 @@ import { createServer } from "http";
 import { Server } from 'socket.io';
 import cors from 'cors'; 
 import socketsConnect  from './controllers/socket';
-import { obtenerFechaHoraPorZonaHoraria } from './services/utiles';
+import { obtenerFechaHoraPorZonaHoraria, obtenerFechaHoraPorZonaHoraria2, obtenerHoraActualPorZonaHoraria } from './services/utiles';
 // import { config } from './config';
 
 // import 'dotenv/config'
@@ -47,7 +47,7 @@ const database = new SqliteDatabase('database.sqlite');
 socketsConnect(io, database)
 
 
-const fechaActual = obtenerFechaHoraPorZonaHoraria();
+const fechaActual = obtenerFechaHoraPorZonaHoraria2();
 console.log('fechaActual zona lima', fechaActual);
 
 // io.on('connection', (socket: any) => {
