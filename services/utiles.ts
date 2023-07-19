@@ -145,7 +145,9 @@ export function obtenerHoraActualPorZonaHoraria(_timeZone: string = 'America/Lim
     console.log('¿hora', hora);
     const dateParts = fecha.split('/');
     const formattedDate = `${dateParts[2]}-${dateParts[0].padStart(2, '0')}-${dateParts[1].padStart(2, '0')}`;
-    const stringDate = `${formattedDate} ${hora}`;
+    const stringDate = `${formattedDate} ${hora.split(' ')[0]}`;
+
+    console.log('stringDate', stringDate);
     
     // const [mes, dia, anio] = fecha.split('/');
     // const [horaParte, minutosParte, segundosParte] = hora.split(':');
