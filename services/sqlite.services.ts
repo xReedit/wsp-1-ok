@@ -82,6 +82,7 @@ export class SqliteDatabase {
     // }
 
     save(id: string, data: any) {
+        // data = data.estructuraInfo
         this.db.get('SELECT * FROM records WHERE id = ?', [id], (error, row) => {
             if (error) {
                 console.error('Error al consultar la base de datos:', error);
@@ -126,10 +127,31 @@ export class SqliteDatabase {
     async getInfoPedido(id: string): Promise<ClassInformacionPedido> {
         let infoPedido = new ClassInformacionPedido()
         const _infoPedido = <ClassInformacionPedido>await this.get(id)
+                
         if (_infoPedido ) {
             infoPedido.setInfoPedidoFromSql(_infoPedido)
         }
         
         return infoPedido;        
+    }
+
+    async getInfoPedidoExists(id: string): Promise<ClassInformacionPedido> {
+        let infoPedido = new ClassInformacionPedido()
+        const _infoPedido = <ClassInformacionPedido>await this.get(id)
+
+
+        if (_infoPedido) {
+            infoPedido.setInfoPedidoFromSql(_infoPedido)
+        } else {
+            this.delete(id) // resetea todo el pedido
+            this.save(id, infoPedido)
+        }
+
+        return infoPedido;
+    }
+
+    guadarInfoDataBase(infoPedido: ClassInformacionPedido, ctxFrom) {
+        // guardamos en database        
+        this.save(ctxFrom, infoPedido)
     }
 }

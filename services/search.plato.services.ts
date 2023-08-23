@@ -223,7 +223,7 @@ function cocinarPeticionCliente(pedidoCliente: any) {
         
     
         return pedidoCliente.map(plato => {
-            const _plato = plato.toLowerCase().split('-')
+            const _plato = plato.toLowerCase().split('-')            
             const _cantidad = _plato[0].trim()
             let _nomPlato = _plato[1].toLocaleLowerCase().trim()
             let _indicaciones = ''
@@ -258,7 +258,17 @@ export function buscarCoincidencias(listaPlatos: any[], pedidoCliente: any[]) {
 
     listaPlatos.map(x => x.des = convertirFraccionesEnCadenas(x.des.toLowerCase())); // convertimos las fracciones en palabras
 
+    
+    pedidoCliente.filter(x => x.trim() !== '').map(x => {
+        x.replace('(sin indicaciones)', '')
+        x = convertirFraccionesEnCadenas(x.toLowerCase())
+        return x;        
+    }); 
+    
+    
+
     let platosBuscar = cocinarPeticionCliente(pedidoCliente)    
+
 
     primeraBusqueda(platosBuscar, listaPlatos, encontrados)
     segundaBusqueda(platosBuscar, listaPlatos, encontrados)
@@ -334,7 +344,8 @@ export function consultarPlato(listaPlatos: any[], pedidoCliente: string) {
 
 // vamos a consultar lo que hay en la carta, traeremos los 5 primeros platos de la seccion mas pedida 
 export function consularLoQueHay(itemsCarta: any[], idSeccionMasPedida: any) {   
-    // obtner los platos de la seccion mas pedida    
+    // obtner los platos de la seccion mas pedida        
+    const _aa = itemsCarta.filter(x => x.idseccion === parseInt(idSeccionMasPedida))    
     const platosSeccionMasPedida = itemsCarta.filter(x =>
         x.idseccion === parseInt(idSeccionMasPedida)
         && (x.cantidad === 'ND' || parseInt(x.cantidad) > 0))

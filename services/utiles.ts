@@ -18,12 +18,12 @@ export const capitalize = (s: string) => {
 // una lista de saludos coordiales que adjunta el nombre del cliente, y se escogera uno al azar
 export const saludosBienvenida = (nombre: string) => {
     const listSaludos = [
-        `👋 Hola *${nombre}*, que gusto saludarte nuevamente`,
-        `👋 Hola *${nombre}*, ¿en qué puedo ayudarte hoy?`,
-        `👋 Hola *${nombre}*, ${obtenerSaludoSegunHora()}`,
-        `👋 Hola *${nombre}*, será un placer ayudarte hoy`,
-        `👋 Hola *${nombre}*, que bueno saludarte nuevamente`,
-        `👋 Hola *${nombre}*, espero que te encuentres bien`
+        `👋 Hola *${nombre}*, que gusto saludarte nuevamente.\nSoy Piter su asistente virtual. ¿en qué le puedo ayudar hoy?`,
+        `👋 Hola *${nombre}*, Soy Piter su asistente virtual\n¿en qué puedo ayudarte hoy?`,
+        `👋 Hola *${nombre}*, ${obtenerSaludoSegunHora()}\nSoy Piter su asistente virtual. Será un gusto ayudarte hoy.`,
+        `👋 Hola *${nombre}*, Soy Piter su asistente virtual. Será un placer ayudarte hoy`,
+        `👋 Hola *${nombre}*, Soy Piter su asistente virtual, que bueno saludarte nuevamente\n¿en qué te puedo ayudar?`,
+        `👋 Hola *${nombre}*, Soy Piter su asistente virtual. Espero que te encuentres bien`
     ]
 
     const lengthList = listSaludos.length
@@ -59,26 +59,19 @@ export const getItemCartaActiva = (listCarta: any) => {
     // const minutos = fechaActual.getMinutes();
 
     const { fechaActual, hora, minutos } = obtenerHoraMinutosPorZonaHoraria3('America/Lima');
-
-    console.log('fechaActual', fechaActual);
-    console.log('hora', hora);
-    console.log('minutos', minutos);
+    
     
 
     const horaActual = new Date(`2023-01-01 ${hora}:${minutos}:00`)
 
-    console.log('horaActual', horaActual);
 
     let listpt = []
     listCarta.filter((item) => {
         // convertir item.hora_ini y item.hora_fin de string a date, ejemplo '13:00' => '2021-01-01 13:00:00
         const _hora_ini = new Date(`2023-01-01 ${item.hora_ini}:00`)
         const _hora_fin = new Date(`2023-01-01 ${item.hora_fin}:00`)
-
-        console.log('_hora_ini comercio', _hora_ini);
-        console.log('_hora_fin comercio', _hora_fin);
+        
         let isActivo = horaActual >= _hora_ini && horaActual <= _hora_fin
-        console.log('isActivo', isActivo);
 
         // si es activo tambien debe estar activo el dia, esto se debe hacer opteniendo el numero de dia de la semana
         // y compararlo con el campo  dia_disponible que es un string con los numeros de dia, ejemplo: dia_disponible = '1,2,3,4,5,6'
@@ -185,6 +178,83 @@ export function obtenerHoraMinutosPorZonaHoraria3(timeZone: string): { fechaActu
     return { fechaActual, hora, minutos };
 }
 
+export function formatPadArrayToString(data, isConPuntos = true) {
+    let stringFormatted = '';
+    const maxLength = 55; // Longitud máxima de la línea
+    const maxDescripcionLength = 27; // Nueva longitud máxima para la descripción
+
+    const _separacion = isConPuntos ? '..' : ' '
+
+    data.forEach(item => {
+        let descripcion = item.descripcion;
+        if (isConPuntos && descripcion.length > maxDescripcionLength) {
+            descripcion = descripcion.substring(0, maxDescripcionLength - 3) + '...';
+        }
+
+        const lentghDescripcion = descripcion.length;
+        const lentghImporte = item.importe.length;
+        const espacioDerecha = maxLength - (lentghDescripcion);
+        const conceptoFormatted = descripcion.toLowerCase().padEnd(espacioDerecha, _separacion);
+        const montoFormatted = item.importe.padStart(5, ' ');
+
+        stringFormatted += `${conceptoFormatted}${montoFormatted}\n`;
+    });
+
+
+    return stringFormatted
+}
+
+
+// obtener la lista de productos y precios
+export function getListaProductosArrayToString(tipoConsumoSeleted: any): string {
+    let stringFormatted = '';
+
+    let newItem = { descripcion: '', importe: '' }
+    tipoConsumoSeleted.secciones.map((seccion: any) => {
+        newItem.descripcion = `*${seccion.des.toUpperCase()}*`
+        newItem.importe = '.'
+
+        const _tituloSeccion = [newItem]
+        let listItemSesccion = []
+
+        stringFormatted += formatPadArrayToString(_tituloSeccion, false)
+
+        seccion.items.map((item: any) => {
+            const _newItem = { descripcion: `${item.cantidad_seleccionada} ${item.des}`, importe: parseFloat(item.precio_print).toFixed(2).toString() } 
+            listItemSesccion.push(_newItem)
+        })       
+        
+        stringFormatted += formatPadArrayToString(listItemSesccion, true)
+    })
+
+    return stringFormatted
+}
+
+export function quitarTildes(cadena) {
+    const tildes = {
+        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U'
+    };
+
+    return cadena.replace(/[áéíóúÁÉÍÓÚ]/g, tilde => tildes[tilde]);
+}
+
+export function getObjectKeys(obj: any): string[] {
+    return Object.keys(obj);
+}
+
+
+export function extraerSoloCamposFaltantes(datos: any): any {
+    const camposFaltantes: any = {};
+
+    for (const key in datos) {
+        if (datos.hasOwnProperty(key) && datos[key] === "") {
+            camposFaltantes[key] = "";
+        }
+    }
+
+    return camposFaltantes;
+}
 
 // export const soundex = (word: string): string => {
 //     const mapping: Record<string, string> = {

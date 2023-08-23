@@ -5,13 +5,15 @@ import axios from 'axios';
 import endpoint from '../endpoints.config';
 import { ClassInformacionPedido } from './info.pedido.class';
 import fetch from 'node-fetch';
+import e from 'express';
 // import { ClassInformacionPedido } from './info.pedido.class';
 
 export class ChatGPT {
     // flowConfirmaPedido(infoPedido: ClassInformacionPedido) {
     //     throw new Error("Method not implemented.");
     // }    
-    private conversationLog: string[];
+    // private conversationLog: any;
+    private conversationLog: { [key: string]: any[] } = {};
     private apiKey: string;
     private apiUrl: string;
     private rolResponde: string = 'mesero';
@@ -24,8 +26,17 @@ export class ChatGPT {
         this.rolResponde = rolResponde;
         this.rolEnvia = rolEnvia;
         this.infoPedido = infoPedido;
-        this.conversationLog = this.infoPedido.getConversationLog();
 
+        this.conversationLog = infoPedido.getAllConversationLog() || []
+
+        if (!this.conversationLog[this.rolResponde]) {
+            this.conversationLog[this.rolResponde] = [];
+        } 
+        // else {
+        //     this.conversationLog[this.rolResponde] = this.infoPedido.getConversationLog(this.rolResponde);
+        // }                
+
+        // console.log('this.conversationLog', this.conversationLog);
         // this.clearConversationLog()
     }
 
@@ -34,6 +45,15 @@ export class ChatGPT {
     private async generateResponse(prompt: string, rol: string= 'user'): Promise<string> {
         try {
             const messages = [{ role: rol, content: prompt }];
+
+            const timeoutMillis = 7000; // Tiempo de espera en milisegundos
+
+            const timeoutPromise = new Promise<never>((_, reject) => {
+                setTimeout(() => {
+                    reject(new Error('La petición ha excedido el tiempo de espera.'));
+                    return 'Lo siento, puede repetirlo porfavor.'
+                }, timeoutMillis);
+            });
 
             // const data_body_axios = JSON.stringify({
             //     model: 'gpt-3.5-turbo',
@@ -52,7 +72,26 @@ export class ChatGPT {
 
             // const response = await axios.post(this.apiUrl, data_body_axios, config_axios);
 
-            const response = await fetch(this.apiUrl, {
+            // const response = await fetch(this.apiUrl, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${this.apiKey}`,
+            //     },
+            //     body: JSON.stringify({
+            //         model: 'gpt-3.5-turbo',
+            //         messages,
+            //         // max_tokens: 50,
+            //         temperature: 0,
+            //         n: 1,
+            //         stop: '\n',
+            //     }),
+            // });
+
+            let data;
+            try {
+            const response = await Promise.race([
+                fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,9 +105,23 @@ export class ChatGPT {
                     n: 1,
                     stop: '\n',
                 }),
-            });
+                }),
+                timeoutPromise,
+            ])
 
-            const data = await response.json();
+            data = await response.json();
+
+            } catch (error) {
+                if (error.message === 'La petición ha excedido el tiempo de espera.') {
+                    console.log('La petición fue cancelada debido al tiempo de espera excedido.');
+                    return 'Lo siento, puede repetirlo porfavor.'
+                } else {
+                    console.error('Error en la petición:', error.message);
+                    return 'Lo siento, puede repetirlo porfavor.'
+                }
+            }
+
+            
 
             
             // const data = response.data;
@@ -83,7 +136,7 @@ export class ChatGPT {
     }
 
     private checkPreviousResponse(prompt: string): string | null {
-        const reversedLog = [...this.conversationLog].reverse();
+        const reversedLog = [...this.conversationLog[this.rolResponde]].reverse();
         const previousIndex = reversedLog.findIndex((entry) => entry.includes(this.rolEnvia+'='));
         if (previousIndex !== -1) {
             const previousUserInput = reversedLog[previousIndex].split('=')[1].trim();
@@ -108,7 +161,7 @@ export class ChatGPT {
         // this.conversationLog.push(message);
 
         //// console.log('conversationLog', this.conversationLog);
-        const prompt = this.conversationLog.join('\n');
+        const prompt = this.conversationLog[this.rolResponde].join('\n');
         //console.log('prompt', prompt);
         // let response = await this.generateResponse(prompt, rol);
         let response = await this.sendMessageChatGpt(prompt, rol);
@@ -162,16 +215,21 @@ export class ChatGPT {
     }
 
     public setRowConversationLog(row: string): void {
-        this.conversationLog.push(row);        
-        this.infoPedido.setConversationLog(this.conversationLog);
-        // console.log('Conversacion == ', this.conversationLog);
+        if (!this.conversationLog[this.rolResponde]) {
+            this.conversationLog[this.rolResponde] = [];
+        }
+
+        this.conversationLog[this.rolResponde].push(row);
+        // this.conversationLog.push(row);         
+        this.infoPedido.setConversationLogUser(this.rolResponde, this.conversationLog[this.rolResponde]);
+        console.log('Conversacion == ', this.conversationLog[this.rolResponde]);
     }
 
     public getConversationLog(): string[] {
-        return this.conversationLog;
+        return this.conversationLog[this.rolResponde];
     }
 
     public clearConversationLog(): void {
-        this.conversationLog = [];
+        this.conversationLog[this.rolResponde] = [];
     }
 }

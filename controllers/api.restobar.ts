@@ -3,7 +3,7 @@
 
 import { ClassCliente } from "../clases/cliente"
 import { ClassInformacionPedido } from "../clases/info.pedido.class";
-import { getData, postDataBot } from "../services/httpClient.services"
+import { getData, postDataBot, putData } from "../services/httpClient.services"
 // import { soundex } from "../services/soundex"
 import { capitalize } from "../services/utiles"
 import { v4 as uuidv4 } from 'uuid';
@@ -27,8 +27,7 @@ export const getNumeroCelular = (num_telefono: string) => {
 export const getClienteByCelular = async (num_telefono: string, data_cliente: ClassCliente) => {    
     num_telefono = getNumeroCelular(num_telefono)    
 
-    const rpt =  await getData(EVENTO, `cliente/${num_telefono}`)    
-    console.log('¿rpt', rpt);
+    const rpt =  await getData(EVENTO, `cliente/${num_telefono}`)        
     const isData = rpt.length > 0 ? true : false    
     if (isData) {
         const _data = rpt[0]
@@ -87,8 +86,8 @@ export const getReglasCarta = async (idsede, idorg) => {
 }
 
 // obtener comprobante electronico
-export const getComprobanteElectronico = async (idsede, dni, serie, numero) => {    
-    const rpt = await getData('chat-bot', `get-comprobante-electronico/${idsede}/${dni}/${serie}/${numero}`)    
+export const getComprobanteElectronico = async (idsede, dni, serie, numero, fecha='') => {    
+    const rpt = await getData('chat-bot', `get-comprobante-electronico/${idsede}/${dni}/${serie}/${numero}/${fecha}`)    
     return rpt;    
 }
 
@@ -133,4 +132,10 @@ function generateRowConversacionBotCliente(infoPedido: ClassInformacionPedido, i
     const _idHistory = postDataClienteBot(payload)
 
     return _idHistory
+}
+
+
+export const putChangeNameCliente = (payload: any) => {       
+    putData('chat-bot', 'change-name-cliente', payload)
+    // return id;
 }

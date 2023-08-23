@@ -58,7 +58,7 @@ export class ClassEstructuraPedido {
 
 
     // proceso de armado del pedido
-    public armarPedido(infoSede: ClassInfoSede, infoPedido: ClassInformacionPedido, infoCliente: ClassCliente) {
+    public armarPedido(infoSede: ClassInfoSede, infoPedido: ClassInformacionPedido, infoCliente: ClassCliente): [number, any] {
         let rptImporteTotalPagar = 0
         let canalConsumoSeleted = infoPedido.getCanalConsumoSeleted()
         const subtotalCostoEntrega = infoPedido.getSubtotalCostoEntrega()
@@ -83,10 +83,11 @@ export class ClassEstructuraPedido {
         this.upperItemDes()
 
         // subtotales
-        // await classSubtotales.getRules(infoSede.idsede, infoSede.idorg)
-        console.log('infoSede.getListReglasCarta()', infoSede.getListReglasCarta());
+        // await classSubtotales.getRules(infoSede.idsede, infoSede.idorg)        
         classSubtotales.setRules(infoSede.getListReglasCarta())         
         let arrSubtotales = classSubtotales.getSubtotales(canalConsumoSeleted.secciones, canalConsumoSeleted.idtipo_consumo, subtotalCostoEntrega)
+
+        // console.log('armar pedido arrSubtotales', arrSubtotales);
         this.setSubtotal(arrSubtotales)
 
         const _isDelivery = infoPedido.getIsDelivery()
@@ -163,7 +164,9 @@ export class ClassEstructuraPedido {
 
         }
 
-            arrDatosDelivery.establecimiento = infoSede
+            const onlyInfoSede = infoSede.getSede()
+
+            arrDatosDelivery.establecimiento = onlyInfoSede
             arrDatosDelivery.dni = '' // colocar
             arrDatosDelivery.f_nac = null
             arrDatosDelivery.nombre = infoCliente.getNombre()
@@ -174,6 +177,12 @@ export class ClassEstructuraPedido {
                 "checked": true,
                 "idpropina": 1,
                 "descripcion": "S/. 0"
+            }
+
+            arrDatosDelivery.tipoComprobante = {
+                "checked": true,
+                "descripcion": "Boleta",
+                "idtipo_comprobante": 1
             }
 
             arrDatosDelivery.paga_con = infoPedido.getMetodoPagoSeleted().descripcion            
@@ -213,7 +222,7 @@ export class ClassEstructuraPedido {
 
         // datos del usuario // para guardarlo
         const _dataUsuarioSend = {
-            'idusuario': 121, // CORREGIRLO
+            'idusuario': _infoSede.idusuario, // CORREGIRLO
             'idcliente': infoCliente.getIdCliente(),
             'idorg': _infoSede.idorg,
             'idsede': _infoSede.idsede,
@@ -236,7 +245,7 @@ export class ClassEstructuraPedido {
         infoPedido.setPedidoEnviar(pedidoEnviar);
 
         rptImporteTotalPagar = arrSubtotales[arrSubtotales.length - 1].importe
-        return rptImporteTotalPagar;
+        return [rptImporteTotalPagar, arrSubtotales];
     }   
 
     public enviarPedido(_infoSede: any, infoPedido: ClassInformacionPedido, infoCliente: ClassCliente) {
@@ -245,7 +254,7 @@ export class ClassEstructuraPedido {
         const dataSocketQuery = {
             idorg: _infoSede.idorg,
             idsede: _infoSede.idsede,
-            idusuario: 121,
+            idusuario: _infoSede.idusuario,
             idcliente: infoCliente.getIdCliente(),
             iscliente: false,
             isOutCarta: false,

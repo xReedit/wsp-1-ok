@@ -1,0 +1,243 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB02146B631298E441DE7',
+    participant: undefined
+  },
+  messageTimestamp: 1692803886,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'quiero 2 tilapias frita',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'quiero 2 tilapias frita',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0753E229B5D480C29E9',
+    participant: undefined
+  },
+  messageTimestamp: 1692803889,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'quiero 2 tilapias frita',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'quiero 2 tilapias frita',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0973A036B0A8E0E2025',
+    participant: undefined
+  },
+  messageTimestamp: 1692803896,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'no',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'no',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0F12C5721AFE5ACDF9B',
+    participant: undefined
+  },
+  messageTimestamp: 1692803900,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'confirmar',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'confirmar',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB03C6F0C2FCD7F5AD9CC',
+    participant: undefined
+  },
+  messageTimestamp: 1692803901,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: '1',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB09B30C7AF177477100E',
+    participant: undefined
+  },
+  messageTimestamp: 1692803905,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'otra direccion',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'otra direccion',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '6320EF50688DA0025650E58D07DA75DD',
+    participant: undefined
+  },
+  messageTimestamp: 1692803916,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    liveLocationMessage: LiveLocationMessage {
+      degreesLatitude: -6.0285882,
+      degreesLongitude: -76.9712232,
+      sequenceNumber: [Long],
+      jpegThumbnail: [Uint8Array],
+      contextInfo: [ContextInfo]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0788AD63EAB6AA10028',
+    participant: undefined
+  },
+  messageTimestamp: 1692803928,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'jr amalaya 12312321',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'jr amalaya 12312321',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0E5F8EFCF64DF7C0145',
+    participant: undefined
+  },
+  messageTimestamp: 1692803940,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'asdasdsa',
+      contextInfo: [ContextInfo],
+      inviteLinkGroupTypeV2: 0
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'asdasdsa',
+  from: '51934746830'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '51934746830@s.whatsapp.net',
+    fromMe: false,
+    id: '8A4D4CCFCFB95A16C3F7A0536B83810F',
+    participant: undefined
+  },
+  messageTimestamp: 1692803952,
+  pushName: 'Papaya Express',
+  broadcast: false,
+  message: Message {
+    locationMessage: LocationMessage {
+      degreesLatitude: -6.0285882,
+      degreesLongitude: -76.9712232,
+      jpegThumbnail: [Uint8Array],
+      contextInfo: [ContextInfo]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '_event_location__be7a2746-70a3-4440-815b-7de772abd9f0',
+  from: '51934746830'
+}

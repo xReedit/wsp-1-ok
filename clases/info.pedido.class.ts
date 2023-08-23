@@ -1,5 +1,21 @@
 import { ClassCliente } from "./cliente";
 
+export enum tituloNivel {
+    saludoIncial = "saludoIncial",
+    noEntendido = "noEntendido",
+    hacerPedido = "hacerPedido",
+    confirmarPedido = "confirmarPedido",
+    verCarta = "verCarta",
+    consultarPlato = "consultarPlato",
+    consultarQueHay = "consultarQueHay",
+    enviarComprobante = "enviarComprobante",
+    solicitarNombre = "solicitarNombre",
+    consultarHorario = "consultarHorario",
+    actualizarNombre = "actualizarNombre",
+    estarAtento = "estarAtento",
+    deseaRealizarUnPedido = "deseaRealizarUnPedido",
+}
+
 interface EstructuraInformacion {    
         sede: any;
         cliente: ClassCliente;
@@ -15,8 +31,9 @@ interface EstructuraInformacion {
         pedidoEnviar: any;
         direccionGeolocalizada: any;
         variables_flow_pedido: any;
+        variables_flow_interaccion: any;
         variables_flow_confirmar_pedido: any;    
-        conversationLog: string[];
+        conversationLog: { [key: string]: any[] };
 }
 
 export class ClassInformacionPedido {    
@@ -45,7 +62,12 @@ export class ClassInformacionPedido {
                     platosRecomendados: [],
                     isWaitResponse: false,
                     isWaitConfirmar: false,
-                    intentosEntederPedido: 0                    
+                    intentosEntederPedido: 0,
+                    optionPrevius: '',
+                    userResponsePrevius: '',
+                    nivelConfirmarPedido: 0, // 0 enviar canales de consumo 1 seleccionar canal 2 recopilar datos cliente 3 tipo de pago 
+                    nivelSolicitarComprobante: 0,
+                    nivelCambiarNombre: 0
                 },
                 variables_flow_confirmar_pedido: {
                     isRecopilandoDatos: false,
@@ -58,15 +80,28 @@ export class ClassInformacionPedido {
                     canalConsumoSeletedMasSeccion: {},
                     _listDirecciones: []
                 },
-                conversationLog: []
+                variables_flow_interaccion: {
+                    nivel_titulo: tituloNivel.saludoIncial,
+                    nivel: 0,
+                    showOptionBotNoEntendio: false // si no entiende le muestra las opciones que le puede ayudar, y espera un numero de opcion
+                },
+            conversationLog:{}
         };
     }
 
-    public setConversationLog(conversationLog: string[]) {
+    public setConversationLog(conversationLog: any) {
         this.estructuraInfo.conversationLog = conversationLog;
     }
 
-    public getConversationLog(): string[] {
+    public setConversationLogUser(user:string, conversationLog: any) {
+        this.estructuraInfo.conversationLog[user] = conversationLog;
+    }
+
+    public getConversationLog(user: string): any {
+        return this.estructuraInfo.conversationLog[user];
+    }
+
+    public getAllConversationLog(): any {
         return this.estructuraInfo.conversationLog;
     }
 
@@ -227,6 +262,14 @@ export class ClassInformacionPedido {
         return this.estructuraInfo.direccionGeolocalizada;
     }
 
+    public setVariablesFlowInteraccion(variablesFlowInteraccion: any) {
+        this.estructuraInfo.variables_flow_interaccion = variablesFlowInteraccion;
+    }
+
+    public getVariablesFlowInteraccion(): any {
+        return this.estructuraInfo.variables_flow_interaccion;
+    }
+
     // funcion que resetea la informacion del pedido menos la del cliente
     public resetInfoPedido() {
         this.estructuraInfo = {            
@@ -251,7 +294,12 @@ export class ClassInformacionPedido {
                 platosRecomendados: [],
                 isWaitResponse: false,
                 isWaitConfirmar: false,
-                intentosEntederPedido: 0                
+                intentosEntederPedido: 0,
+                optionPrevius: '',
+                userResponsePrevius: '',
+                nivelConfirmarPedido: 0, // 0 enviar canales de consumo 1 seleccionar canal 2 recopilar datos cliente 3 tipo de pago 
+                nivelSolicitarComprobante: 0,
+                nivelCambiarNombre: 0
             },
             variables_flow_confirmar_pedido: {
                 isRecopilandoDatos: false,
@@ -264,7 +312,12 @@ export class ClassInformacionPedido {
                 canalConsumoSeletedMasSeccion: {},  
                 _listDirecciones: []                           
             },
-            conversationLog: []
+            variables_flow_interaccion: {
+                nivel_titulo: tituloNivel.saludoIncial,
+                nivel: 0,
+                showOptionBotNoEntendio: false
+            }, 
+            conversationLog:{}
         };
     }
 

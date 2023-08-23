@@ -234,7 +234,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
             }
 
             const _idCanalConsumo = ctx.body.toLowerCase().trim()                        
-            let canalConsumoSeleted = listCanalesConsumo.find((item: any) => item.idshow === parseInt(_idCanalConsumo))                        
+            let canalConsumoSeleted = listCanalesConsumo.find((item: any) => item.idshow === parseInt(_idCanalConsumo))
 
 
             if (!canalConsumoSeleted) {
@@ -242,7 +242,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
             }
 
             // solicitar datos segun canal de consumo
-            let datosRecopiladosDelCliente = datosSolicitarSegunCanal(canalConsumoSeleted.idshow)            
+            let datosRecopiladosDelCliente = datosSolicitarSegunCanal(canalConsumoSeleted.idshow)
             datosRecopiladosDelCliente.telefono = infoCliente.getCelular()
             datosRecopiladosDelCliente.nombre = infoCliente.getNombrePila()            
 
@@ -270,7 +270,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                 // canal de consumo
                 _prompt = _prompt.replace('{canal_consumo}', canalConsumoSeleted.descripcion)
 
-                // chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente', infoPedido)
+                chatGptConfirmaPedido = new ChatGPT('asistente', 'cliente', infoPedido)
                 // infoPedido.setInstanceChatGpt(chatGptConfirmaPedido)
 
                 // envio el promt
@@ -313,7 +313,7 @@ export const flowConfirmaPedido = (infoSede: ClassInfoSede, database: SqliteData
                         } else {
                             // si solo hay una debe confirmarla
                             _listDireccionesShow = _listDirecciones[0]
-                            tileAddAnswerDatosfaltantes = `Tenemos registrado la siguiente direccion:\n*${_listDireccionesShow.direccion.split(',')[0]}*\n\nSe la enviamos a esta direccion? escriba: *si* o *no*`
+                            tileAddAnswerDatosfaltantes = `Tenemos registrado la siguiente direccion:\n*${_listDireccionesShow.direccion.split(',')[0]}*\n\nSe la enviamos a esta direccion? escriba: *Si* o *No*`
                             infoFlowConfirma.isClienteConfirmaDireccion = true;
                         }  
                         

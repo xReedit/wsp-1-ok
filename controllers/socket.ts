@@ -18,8 +18,7 @@ const socketsConnect = (io: any, database: SqliteDatabase) => {
             console.log('disconnect');            
             socket.disconnect()        
         });
-        
-       
+
 
         socket.on('init_bot', (playload: any) => {
             

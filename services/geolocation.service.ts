@@ -23,7 +23,7 @@ export class GeolocationServices {
 
     async getCoordenadas(direccion: string, ciudades: string) {
         let coordenadas: { latitud: number, longitud: number } = { latitud: 0, longitud: 0 };
-        let response: any;
+        let response: any = false;
         const arrCuidades = ciudades.split(',');
         // console.log('arrCuidades', arrCuidades);    
 
@@ -183,7 +183,9 @@ export class GeolocationServices {
         const radioMaximo = parametros.km_limite; // Radio máximo de 10 km
 
         // const distanciaEnKm = await this.getDistanciaRutaMasCorta(coordenadaOrigen, coordenadaDestino);
+        console.log('parametros', parametros);
         const distanciaEnKm = this.calcularDistanciaNoApi(coordenadaOrigen, coordenadaDestino);
+        console.log('distanciaEnKm', distanciaEnKm);
 
         if (distanciaEnKm > radioMaximo) {
             return { mensaje: "😔 Lo siento, el servicio no disponible en esta zona 🗺️\n Verifique que la direccion sea la correcta. *Tambien puede adjuntarnos su ubicación.*", success: false };
@@ -192,10 +194,15 @@ export class GeolocationServices {
         let costoServicio = costoBasico;
         const distanciaAdicional = distanciaEnKm - radioBasico;
 
+        console.log('distanciaAdicional', distanciaAdicional);
         if (distanciaAdicional > 0) {
             const costoAdicional = distanciaAdicional * costoAdicionalPorKilometro;
-            costoServicio += Math.round(costoAdicional); // redondea
+            console.log('costoAdicional', costoAdicional);
+            costoServicio = parseFloat(costoServicio) + Math.round(costoAdicional);
         }
+
+        console.log('costoServicio', costoServicio);
+        // costoServicio = Math.round(costoServicio)// redondea
 
         return { distancia_en_km: distanciaEnKm.toFixed(2), costo_servicio: costoServicio, success: true };
     }
@@ -230,7 +237,7 @@ export class GeolocationServices {
     async calcularSubtotaCostoEntrega(origen: string, destino: string, parametros) {
         // costo de entrega
         const arrCostoEntrega = await this.calcularCostoServicio(origen, destino, parametros)
-        // console.log('arrCostoEntrega', arrCostoEntrega);
+        console.log('arrCostoEntrega', arrCostoEntrega);
         
         if (arrCostoEntrega.success === false) {
             return arrCostoEntrega
@@ -239,7 +246,7 @@ export class GeolocationServices {
         const subtotalCostoEntrega = {
             "id": 0,
             "quitar": true,
-            "importe": arrCostoEntrega.costo_servicio.toFixed(2),
+            "importe": parseFloat(arrCostoEntrega.costo_servicio).toFixed(2),
             "tachado": false,
             "visible": true,
             "esImpuesto": 0,

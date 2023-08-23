@@ -26,6 +26,8 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
     let mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\n' + msjFormatoPedido
 
 
+    console.log('0aaaaaa flow pedido');
+
     // let infoPedido = new ClassInformacionPedido()
 
     
@@ -33,7 +35,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
     
     let infoSede: ClassInfoSede = _infoSede
     
-    return addKeyword(['1', '2', '3', EVENTS.VOICE_NOTE])  
+    return addKeyword(['1', '2', EVENTS.VOICE_NOTE])  
     //.addAction(
       //  async () => {
             // reset de variables
@@ -61,8 +63,10 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             let infoPedido = new ClassInformacionPedido()
             infoPedido = await database.getInfoPedido(ctx.from)
 
-            let infoFlowPedido = infoPedido.getVariablesFlowPedido()
+            let infoFlowPedido = infoPedido.getVariablesFlowPedido()            
 
+            console.log('infoFlowPedido option', infoFlowPedido.optionPrevius);
+            console.log('infoFlowPedido userResponsePrevius', infoFlowPedido.userResponsePrevius);
       
             let rptUser = ctx.body.toLowerCase().trim()
 
@@ -184,6 +188,9 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             let infoPedido = new ClassInformacionPedido()
             infoPedido = await database.getInfoPedido(ctx.from)
             let infoFlowPedido = infoPedido.getVariablesFlowPedido()
+
+            console.log('infoFlowPedido option', infoFlowPedido.optionPrevius);
+            console.log('infoFlowPedido userResponsePrevius', infoFlowPedido.userResponsePrevius);
             
             // if (!showTomarPedido) {
             if (!infoFlowPedido.showTomarPedido) {
@@ -328,7 +335,7 @@ export const flowPedido = (_infoSede: ClassInfoSede, database: SqliteDatabase) =
             }      
 
             // envia a la tienda en linea
-            if (infoFlowPedido.intentosEntederPedido > 3) {
+            if (infoFlowPedido.intentosEntederPedido > 2) {
 
                 
                                 

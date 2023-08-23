@@ -4,6 +4,7 @@
 import type { ClassEstructuraPedido } from "./estructura.pedido.class";
 import { getData } from "./httpClient.services";
 import { Subtotal } from "./interface.class";
+import { formatPadArrayToString } from "./utiles";
 
 export class ClassGetSubTotales {
     arrReglasCarta: any 
@@ -63,8 +64,12 @@ export class ClassGetSubTotales {
     }
 
     // obtener la lista de impuestos de las reglas de la carta
-    getImpuestosReglasCarta() {        
-        return this.arrReglasCarta.subtotales.filter((item: any) => item.es_impuesto === 1 && item.activo === 1)
+    getImpuestosReglasCarta() {   
+        try {
+            return this.arrReglasCarta.subtotales.filter((item: any) => item.es_impuesto === 1 && item.activo === 1)            
+        } catch (error) {
+            return []
+        }     
     }
 
     // obterner costos no impuestos por idseccion
@@ -155,6 +160,13 @@ export class ClassGetSubTotales {
             const _idSubtotal = `${c.tipo}${c.id}` 
             const _costoXcantidad = parseFloat(c.monto)
             const _subtotal = arrSubtotales.find((s: Subtotal) => s.descripcion.toLowerCase().trim() === c.descripcion.toLowerCase().trim())
+
+            // si en la reglas incluye delivery ya no lo ponemos en el subtotal
+            if (c.descripcion.toLowerCase().trim().includes('delivery')) {
+                // continuar
+                return
+            }
+
             if (_subtotal) {
                 _subtotal.importe = (parseFloat(_subtotal.importe) + _costoXcantidad).toFixed(2)
             } else {
@@ -268,7 +280,7 @@ export class ClassGetSubTotales {
         }
 
         // total despues de impuestos
-        totalSubtotales = arrSubtotales.map(x => x.importe).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
+        // totalSubtotales = arrSubtotales.map(x => x.importe).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
 
         arrSubtotales.push({
             id: 0,
@@ -322,4 +334,7 @@ export class ClassGetSubTotales {
     xCalcMontoBaseIGV(importeTotal, procentaje_IGV) {
         return (parseFloat(importeTotal) / (1 + (procentaje_IGV / 100)));
     }
+
+
+    
 }

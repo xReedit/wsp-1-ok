@@ -142,16 +142,27 @@ export const postDataJSON = async (controller: string, event: string, payload: a
 // export function put apirest
 export const putData = async (controller: string, event: string, payload: any = null) => {
     const url = `${PUBLIC_API_KEY}/${controller}/${event}`
-    const token = localStorage.getItem('token')
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+    // const token = localStorage.getItem('token')
+    // const headers = {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${token}`
+    // }
+
+    // return await fetch(url, {
+    //     method: 'PUT',
+    //     headers,
+    //     body: payload ? JSON.stringify(payload) : payload
+    // })
+
+    try {
+
+        // const response = await axios.put(url, payload, { headers });
+        const response = await axios.put(url, payload);
+        return response.data;      
+    } catch (error) {
+        console.error('Error al enviar los datos');
+        // throw new Error('Error al enviar los datos');
     }
-    return await fetch(url, {
-        method: 'PUT',
-        headers,
-        body: payload ? JSON.stringify(payload) : payload
-    })
 }
 
 

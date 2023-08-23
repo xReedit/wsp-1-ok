@@ -39,7 +39,7 @@ export const flowComprobante = (infoSede: any) => {
             
             const nomRucDNI = datosComprobante.dni.length > 8 ? 'Ruc' : 'DNI'
 
-            const msjConfirmar = `Esto es lo que entendi:\n${nomRucDNI}= ${datosComprobante.dni}\nNumero= ${datosComprobante.numero}\n\n¿Es correcto? escriba *si* o *no*`    
+            const msjConfirmar = `Esto es lo que entendi:\n${nomRucDNI}= ${datosComprobante.dni}\nNumero= ${datosComprobante.numero}\n\n¿Es correcto? escriba *SI* o *NO*`    
             return await fallBack(msjConfirmar)
         }
 
