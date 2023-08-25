@@ -135,6 +135,8 @@ export class GeolocationServices {
         // //     console.log('error', error);
         // //     throw new Error('Ocurrió un error al obtener la ruta entre las coordenadas.');
         // // }
+        console.log('origen', origen);
+        console.log('destino', destino);        
         
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origen)}&destination=${encodeURIComponent(destino)}&key=${this.apiKey}`;
 
@@ -182,9 +184,9 @@ export class GeolocationServices {
         const costoAdicionalPorKilometro = parametros.km_adicional_costo; // Costo adicional por kilómetro de $2.00
         const radioMaximo = parametros.km_limite; // Radio máximo de 10 km
 
-        // const distanciaEnKm = await this.getDistanciaRutaMasCorta(coordenadaOrigen, coordenadaDestino);
         console.log('parametros', parametros);
-        const distanciaEnKm = this.calcularDistanciaNoApi(coordenadaOrigen, coordenadaDestino);
+        const distanciaEnKm = await this.getDistanciaRutaMasCorta(coordenadaOrigen, coordenadaDestino);
+        // const distanciaEnKm = this.calcularDistanciaNoApi(coordenadaOrigen, coordenadaDestino);
         console.log('distanciaEnKm', distanciaEnKm);
 
         if (distanciaEnKm > radioMaximo) {
@@ -210,8 +212,8 @@ export class GeolocationServices {
 
 
     calcularDistanciaNoApi(origen: string, destino: string): number {
-        // console.log('origen', origen);
-        // console.log('destino', destino);
+        console.log('origen', origen);
+        console.log('destino', destino);
         const [lat1, lon1] = origen.split(',').map(Number);
         const [lat2, lon2] = destino.split(',').map(Number);
         
