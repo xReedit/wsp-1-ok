@@ -60,7 +60,7 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
     // envamos el prompt
     if (infoFlowPedido.isWaitResponse === false ) {
         console.log('enviamos el prompt mozo');
-        await chatGpt.sendPrompt(PROMPTS.rolMozo2)
+        await chatGpt.sendPrompt(endpoint.rolMozo2)
     }
 
     infoFlowPedido.isWaitResponse = true;

@@ -10,5 +10,10 @@ export default {
     api_key_google: process.env.API_KEY_GOOGLE ?? '',
     url_api_pedido: process.env.URL_API_PEDIDO ?? '',
     url_img_carta: process.env.URL_IMG_CARTA ?? '',
-    url_tienda_linea: process.env.URL_TIENDA_LINEA ?? ''
+    url_tienda_linea: process.env.URL_TIENDA_LINEA ?? '',
+    rolRecepcion: process.env.PROMPT_RECEPCION ?? '',
+    rolMozo: process.env.PROMPT_MOZO ?? '',
+    rolMozo2: process.env.PROMPT_MOZO2 ?? '',
+    rolRecopiladorDatos: process.env.PROMPT_RECOPILADOR ?? '',
+    rolAyudanteComprobante: process.env.PROMPT_AYUDANTE_COMPROBANTE ?? '',
 }

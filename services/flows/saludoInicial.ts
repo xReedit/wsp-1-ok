@@ -3,6 +3,7 @@ import { ClassCliente } from "../../clases/cliente";
 import { ClassInformacionPedido } from "../../clases/info.pedido.class";
 import { getClienteByCelular } from "../../controllers/api.restobar";
 import { PROMPTS } from "../../prompts/prompts";
+import endpoint from '../../endpoints.config';
 import { SqliteDatabase } from "../sqlite.services";
 import { saludosBienvenida } from "../utiles";
 
@@ -27,7 +28,7 @@ export const saludoInicial = async (
 
     // INICIA CHATGPT - lanza el prompt
     let chatGpt = new ChatGPT('asistente', 'cliente', infoPedido)
-    await chatGpt.sendPrompt(PROMPTS.rolRecepcion)
+    await chatGpt.sendPrompt(endpoint.rolRecepcion)
     // const modelResponse = await chatGpt.sendMessage(userResponse)
 
     // return modelResponse;    

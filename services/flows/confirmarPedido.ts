@@ -4,6 +4,7 @@ import { ClassEstructuraPedido } from "../../clases/estructura.pedido.class"
 import { ClassInformacionPedido, tituloNivel } from "../../clases/info.pedido.class"
 import { ClassInfoSede } from "../../clases/sede"
 import { PROMPTS } from "../../prompts/prompts"
+import endpoint from '../../endpoints.config';
 import { GeolocationServices } from "../geolocation.service"
 import { capitalize, extraerSoloCamposFaltantes, formatPadArrayToString, getListaProductosArrayToString, getObjectKeys, handlerAI, obtenerClavesSinDatos } from "../utiles"
 
@@ -116,7 +117,8 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
             // datos recopilados incompletos
             tileAddAnswerDatosfaltantes = `📝 Para *${capitalize(canalConsumoSeleted.descripcion)}* necesitamos los siguientes datos:\n*${datosFaltantes.join(',')}*`
             datosFaltantesSendPrompt = `Para ${capitalize(canalConsumoSeleted.descripcion)} necesito que me proporcione los siguientes datos: ${datosFaltantes.join(',')}`
-            let _prompt = PROMPTS.rolRecopiladorDatos
+            // let _prompt = PROMPTS.rolRecopiladorDatos    
+            let _prompt = endpoint.rolRecopiladorDatos                
             
             
             // solo enviar datos que faltan al prompt

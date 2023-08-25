@@ -223,7 +223,15 @@ function cocinarPeticionCliente(pedidoCliente: any) {
         
     
         return pedidoCliente.map(plato => {
-            const _plato = plato.toLowerCase().split('-')            
+            let _plato;
+
+            // evalua formato correcto cantidad-nombre_plato
+            try {
+                _plato = plato.toLowerCase().split('-')                            
+            } catch (error) {
+                return false;
+            }
+
             const _cantidad = _plato[0].trim()
             let _nomPlato = _plato[1].toLocaleLowerCase().trim()
             let _indicaciones = ''

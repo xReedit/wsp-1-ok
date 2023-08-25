@@ -3,6 +3,7 @@ import { ClassInformacionPedido, tituloNivel } from "../../clases/info.pedido.cl
 import { ClassInfoSede } from "../../clases/sede";
 import { getComprobanteElectronico } from "../../controllers/api.restobar";
 import { PROMPTS } from "../../prompts/prompts";
+import endpoint from '../../endpoints.config';
 import { quitarTildes } from "../utiles";
 
 
@@ -32,7 +33,7 @@ export const enviarComprobante = async (paramsFlowInteraction: any, ctx: any, in
     if (infoFlowPedido.nivelSolicitarComprobante === 0 ) {
 
         // INCIAR CHATGPT
-        let _prompt = PROMPTS.rolAyudanteComprobante        
+        let _prompt = endpoint.rolAyudanteComprobante        
         await chatGptComprobante.sendPrompt(_prompt)
 
         infoFlowPedido.nivelSolicitarComprobante=1        
@@ -81,7 +82,7 @@ export const enviarComprobante = async (paramsFlowInteraction: any, ctx: any, in
             const _dataSend = {
                 dni: infoFlowPedido.rucDniCliente,
                 serie: infoFlowPedido.numeroComprobante.split('-')[0].toUpperCase(),
-                numero: infoFlowPedido.numeroComprobante.split('-')[1],
+                numero: parseInt(infoFlowPedido.numeroComprobante.split('-')[1]), // entero sin ceros
                 fechaComprobante: infoFlowPedido.fechaComprobante,
                 idsede: xinfoSede.idsede
             }
