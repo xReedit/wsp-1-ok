@@ -30,8 +30,8 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {    
-    "@whiskeysockets/baileys": "^6.4.0",
+  "devDependencies": {
+    "@adiwajshing/baileys": "github:WhiskeySockets/Baileys",    
     "@adiwajshing/keyed-db": "^0.2.4",
     "@bot-whatsapp/bot": "^0.1.29",
     "@bot-whatsapp/cli": "^0.1.29",
