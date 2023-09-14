@@ -4,7 +4,7 @@ import { ClassInfoSede } from "../../clases/sede";
 import { getComprobanteElectronico } from "../../controllers/api.restobar";
 import { PROMPTS } from "../../prompts/prompts";
 import endpoint from '../../endpoints.config';
-import { quitarTildes } from "../utiles";
+import { fechaGuionASlash, quitarTildes, transformarFecha } from "../utiles";
 
 
 // envia los comprobantes de pago
@@ -40,50 +40,16 @@ export const enviarComprobante = async (paramsFlowInteraction: any, ctx: any, in
         return 'Por favor digame el *RUC* o *DNI* del cliente -a quien fue emitido-'
     }
 
-    modelResponse = await chatGptComprobante.sendMessage(userResponse)
-    console.log('modelResponse', modelResponse);
-    // si el modelo responde "salir_conversacion"
-    modelResponse = quitarTildes(modelResponse.toLowerCase().trim())
-    if (modelResponse.includes('salir_conversacion')) {
-        return exitFlowComprobante(infoFlowPedido, paramsFlowInteraction, userResponse)
-    }
-
-
-    // numero de comprobante
-    if (infoFlowPedido.nivelSolicitarComprobante === 1) {
-        infoFlowPedido.nivelSolicitarComprobante = 2
-        infoFlowPedido.rucDniCliente = userResponse
-        return 'Ahora necesito el numero de comprobante\n*Ejemplo:F001-150* o sino tiene el numero me pasa la fecha de consumo\n*Ejemplo: 15/05/2023'
-    }
-    
-    // confirma lo que entendio
-    if (infoFlowPedido.nivelSolicitarComprobante === 2) {
-        infoFlowPedido.nivelSolicitarComprobante = 3   
-        const nomRucDNI = infoFlowPedido.rucDniCliente.length > 8 ? 'Ruc' : 'DNI'
-        infoFlowPedido.fechaComprobante = ''        
-
-
-        // evaluar si es fecha
-        const isFecha = userResponse.includes('/')
-        if (isFecha) {
-            // solo obtener la fecha            
-            infoFlowPedido.fechaComprobante = userResponse
-            return `Esto es lo que entendi:\n${nomRucDNI}: ${infoFlowPedido.rucDniCliente}\Fecha Comprobante: ${infoFlowPedido.fechaComprobante}\n\n¿Es correcto? escriba *Si* o *No*`
-        }
-        
-        infoFlowPedido.numeroComprobante = userResponse        
-        return `Esto es lo que entendi:\n${nomRucDNI}= ${infoFlowPedido.rucDniCliente}\nNumero= ${infoFlowPedido.numeroComprobante}\n\n¿Es correcto? escriba *Si* o *no*`
-    }
-
     // confirma lo que entendio
     if (infoFlowPedido.nivelSolicitarComprobante === 3) {
-        if (userResponse.includes('si')) {
+        console.log('userResponse', userResponse);
+        if (['confirmar', 'confirmo', 'confirmado', 'confirma', 'confirm', 'dale', 'ok', 'listo', 'si', 'ya'].includes(userResponse)) {
             await sock.sendMessage(jid, { text: 'Un momento por favor, estoy buscando el comprobante 🕑' })
             const _dataSend = {
                 dni: infoFlowPedido.rucDniCliente,
-                serie: infoFlowPedido.numeroComprobante.split('-')[0].toUpperCase(),
-                numero: parseInt(infoFlowPedido.numeroComprobante.split('-')[1]), // entero sin ceros
-                fechaComprobante: infoFlowPedido.fechaComprobante,
+                serie: infoFlowPedido.numeroComprobante ? infoFlowPedido.numeroComprobante.split('-')[0].toUpperCase() : '0',
+                numero: infoFlowPedido.numeroComprobante ? parseInt(infoFlowPedido.numeroComprobante.split('-')[1]): '0', // entero sin ceros
+                fechaComprobante: infoFlowPedido.fechaComprobante ? infoFlowPedido.fechaComprobante : '0',
                 idsede: xinfoSede.idsede
             }
 
@@ -94,13 +60,14 @@ export const enviarComprobante = async (paramsFlowInteraction: any, ctx: any, in
             if (rpt.success) {
                 // const _data = rpt.external_id
                 const user_id = xinfoSede.id_api_comprobante
+                const numero_comprobante = rpt.numero_comprobante
 
                 // adjuntar comprobante electronico
                 const _ulrPdf = `https://apifac.papaya.com.pe/downloads/document/pdf/${rpt.external_id}/${user_id}`;
                 const _ulrXmlComprobante = `https://apifac.papaya.com.pe/downloads/document/xml/${rpt.external_id}/${user_id}`;
 
                 // enviarlo                
-                const _nomComprobante = infoFlowPedido.numeroComprobante.toUpperCase()
+                const _nomComprobante = numero_comprobante;  //infoFlowPedido.numeroComprobante.toUpperCase()
 
                 const documentUrl = {
                     document: {
@@ -127,7 +94,7 @@ export const enviarComprobante = async (paramsFlowInteraction: any, ctx: any, in
                 await sock.sendMessage(jid, documentUrlXml)
 
                 return `Le adjunte el comprobante solicitado, también lo puedo consultar en papaya.com.pe\nQue tenga un buen dia! 🙂`
-            } else {                
+            } else {
                 infoFlowPedido.nivelSolicitarComprobante = 0
                 return 'No encontre ningun comprobante con esos datos, por favor verifique y vuelva a escribir. \nTambién lo puedo consultar en papaya.com.pe'
             }
@@ -136,6 +103,43 @@ export const enviarComprobante = async (paramsFlowInteraction: any, ctx: any, in
             return 'Por favor vuelva a escribir los datos, primero el ruc o dni a quien fue emitido el comprobante'
         }
     }
+
+    modelResponse = await chatGptComprobante.sendMessage(userResponse)
+    console.log('modelResponse', modelResponse);
+    // si el modelo responde "salir_conversacion"
+    modelResponse = quitarTildes(modelResponse.toLowerCase().trim())
+    if (modelResponse.includes('salir_conversacion')) {
+        return exitFlowComprobante(infoFlowPedido, paramsFlowInteraction, userResponse)
+    }
+
+
+    // numero de comprobante
+    if (infoFlowPedido.nivelSolicitarComprobante === 1) {
+        infoFlowPedido.nivelSolicitarComprobante = 2
+        infoFlowPedido.rucDniCliente = userResponse
+        return 'Ahora necesito el numero de comprobante\n*Ejemplo:F001-150*\n O sino tiene el numero me pasa la fecha de consumo\n*Ejemplo: 15/05/2023*'
+    }
+    
+    // confirma lo que entendio
+    if (infoFlowPedido.nivelSolicitarComprobante === 2) {
+        infoFlowPedido.nivelSolicitarComprobante = 3   
+        const nomRucDNI = infoFlowPedido.rucDniCliente.length > 8 ? 'Ruc' : 'DNI'
+        infoFlowPedido.fechaComprobante = ''        
+
+
+        // evaluar si es fecha
+        const isFecha = userResponse.includes('/')
+        if (isFecha) {
+            // solo obtener la fecha            
+            infoFlowPedido.fechaComprobante = transformarFecha(userResponse)
+            return `Esto es lo que entendi:\n${nomRucDNI}: ${infoFlowPedido.rucDniCliente}\nFecha Comprobante: ${fechaGuionASlash(infoFlowPedido.fechaComprobante)}\n\n¿Es correcto? escriba *Si* o *No*`
+        }
+        
+        infoFlowPedido.numeroComprobante = userResponse        
+        return `Esto es lo que entendi:\n${nomRucDNI}= ${infoFlowPedido.rucDniCliente}\nNumero= ${infoFlowPedido.numeroComprobante}\n\n¿Es correcto? escriba *Si* o *no*`
+    }
+
+   
 }
 
 

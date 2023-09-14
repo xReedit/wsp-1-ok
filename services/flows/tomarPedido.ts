@@ -11,7 +11,7 @@ let msjFormatoPedido = `De prefencia en una sola línea y en este formato:\n*can
 
 
 export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, _infoSede: ClassInfoSede, { provider, flowDynamic }) => {
-    console.log('tomarPedido')
+    // console.log('tomarPedido')
     
     let infoFlowPedido = infoPedido.getVariablesFlowPedido()
     let paramsFlowInteraction = infoPedido.getVariablesFlowInteraccion()
@@ -25,7 +25,7 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
     let userResponse = ctx.body.toLowerCase().trim()
 
 
-    console.log('infoFlowPedido.userResponsePrevius', infoFlowPedido.userResponsePrevius);
+    // console.log('infoFlowPedido.userResponsePrevius', infoFlowPedido.userResponsePrevius);
     userResponse = infoFlowPedido.userResponsePrevius === '' ? userResponse : infoFlowPedido.userResponsePrevius
     infoFlowPedido.userResponsePrevius = ''
 
@@ -39,12 +39,12 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
     }
 
     // espera a confirmar el pedido
-    console.log('infoFlowPedido.isWaitConfirmar', infoFlowPedido.isWaitConfirmar);
+    // console.log('infoFlowPedido.isWaitConfirmar', infoFlowPedido.isWaitConfirmar);
     if (infoFlowPedido.isWaitConfirmar === true) {
-        console.log('confirmar pedido');
+        // console.log('confirmar pedido');
         const isConfirmaPedido = ['confirmar', 'confirmo', 'confirmado', 'confirma', 'confirm', 'dale', 'ok', 'listo', 'si'].includes(userResponse)
         
-        console.log('isConfirmaPedido', isConfirmaPedido);
+        // console.log('isConfirmaPedido', isConfirmaPedido);
         if (isConfirmaPedido) {
             infoFlowPedido.isWaitConfirmar = false
             paramsFlowInteraction.nivel_titulo = tituloNivel.confirmarPedido
@@ -55,11 +55,11 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
     // INICIA CHATGPT
     let chatGpt = new ChatGPT('mesero', 'cliente', infoPedido)
 
-    console.log('userResponse tomar pedido', userResponse);
+    // console.log('userResponse tomar pedido', userResponse);
 
     // envamos el prompt
     if (infoFlowPedido.isWaitResponse === false ) {
-        console.log('enviamos el prompt mozo');
+        // console.log('enviamos el prompt mozo');
         await chatGpt.sendPrompt(endpoint.rolMozo2)
     }
 
@@ -67,7 +67,7 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
 
     let modelResponse = await chatGpt.sendMessage(userResponse)
 
-    console.log('modelResponse', modelResponse);
+    // console.log('modelResponse', modelResponse);
 
     const isPedido = modelResponse.includes('pedido=')
 

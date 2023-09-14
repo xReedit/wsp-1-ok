@@ -9,7 +9,7 @@ import { GeolocationServices } from "../geolocation.service"
 import { capitalize, extraerSoloCamposFaltantes, formatPadArrayToString, getListaProductosArrayToString, getObjectKeys, handlerAI, obtenerClavesSinDatos } from "../utiles"
 
 export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoPedido: ClassInformacionPedido, _infoSede: ClassInfoSede, { provider, flowDynamic }) => {
-    console.log('confirmarPedido')
+    // console.log('confirmarPedido')
 
     let infoFlowPedido = infoPedido.getVariablesFlowPedido()
     let infoFlowConfirma = infoPedido.getVariablesFlowConfirmarPedido()
@@ -45,7 +45,8 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
 
     // confirma el importe total del pedido
     if (infoFlowPedido.preguntaSiEstaConformeOk) {
-        if (userResponse.includes('ok')) {
+        // if (userResponse.includes('ok')) {
+        if (['confirmar', 'confirmo', 'confirmado', 'confirma', 'confirm', 'dale', 'ok', 'listo', 'si', 'ya'].includes(userResponse)){
             // enviarPedido(infoCliente, infoPedido, infoSede)
 
             try {
@@ -118,6 +119,7 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
             tileAddAnswerDatosfaltantes = `📝 Para *${capitalize(canalConsumoSeleted.descripcion)}* necesitamos los siguientes datos:\n*${datosFaltantes.join(',')}*`
             datosFaltantesSendPrompt = `Para ${capitalize(canalConsumoSeleted.descripcion)} necesito que me proporcione los siguientes datos: ${datosFaltantes.join(',')}`
             // let _prompt = PROMPTS.rolRecopiladorDatos    
+            // infoFlowConfirma.datosFaltantesSegunCanalConsumo = datosFaltantesSendPrompt;
             let _prompt = endpoint.rolRecopiladorDatos                
             
             
@@ -125,10 +127,14 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
             const _datosRecopiladosDelCliente = extraerSoloCamposFaltantes(datosRecopiladosDelCliente) //Object.keys(datosRecopiladosDelCliente).map(key => `${key}: ${JSON.stringify(datosRecopiladosDelCliente[key])}`).join(',')
             const _canal_consumo_prompt = canalConsumoSeleted.descripcion === 'DELIVERY' ? 'de entrega a domicilio (DELIVERY)' : canalConsumoSeleted.descripcion
 
-
+            let _prompt_delivery = ''
+            if (infoPedido.getIsDelivery()) {
+                _prompt_delivery = ' [DATO ADICIONAL] El cliente te puede proporcionar la direccion y referencia en una sola linea, ejemplo: Av. Los Pinos 123, frente a la comisaria. Debes identificar cual es la direccion y cual es la referencia. En este caso la direccion seria: Av. Los Pinos 123 y la referencia seria: frente a la comisaria.'  
+            }
             
             _prompt = _prompt.replace('{datos}', JSON.stringify(_datosRecopiladosDelCliente))
             _prompt = _prompt.replace('{canal_consumo}', _canal_consumo_prompt)
+            _prompt = _prompt + _prompt_delivery
 
             // envio el promt
             await chatGptConfirmaPedido.sendPrompt(_prompt)
@@ -170,6 +176,7 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
             // si direccion no valida
             if ( !isDireccionSeleted ) {
                 modelResponse = await chatGptConfirmaPedido.sendMessage(userResponse)
+                // chatGptConfirmaPedido.setRowConversationLog(`recolector=${infoFlowConfirma.datosFaltantesSegunCanalConsumo}.`)
             }   
         } else {
             modelResponse = await chatGptConfirmaPedido.sendMessage(userResponse)
@@ -536,7 +543,7 @@ async function validarDireccion(direccionOCoordenadasCliente: any, datosRecopila
 
     // console.log('direccionOCoordenadasCliente', direccionOCoordenadasCliente);
     if (!direccionClienteSeletedCoordenadas) {
-        const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida, o envíe su ubicación.'
+        const _rptMsj = 'No pude encontrar la direccion en el mapa, escriba por favor una direccion válida, o envíe su *ubicación actual*. 🚩'
 
         // let chatGptConfirmaPedido = infoPedido.getInstanceChatGpt()
         chatGptConfirmaPedido.setRowConversationLog(`asisente=${_rptMsj}`)
@@ -546,10 +553,12 @@ async function validarDireccion(direccionOCoordenadasCliente: any, datosRecopila
 
 
     // seteamos en la info del pedido
-    direccionClienteSeletedCoordenadas.referencia = datosRecopiladosDelCliente.referencia_de_la_direccion
+    direccionClienteSeletedCoordenadas.referencia = datosRecopiladosDelCliente.referencia_de_la_direccion || ''
     infoPedido.setDireccionGeolocalizada(direccionClienteSeletedCoordenadas)
 
     const coordenadas_origen = `${_infoSede.latitude}, ${_infoSede.longitude}`
+    console.log('coordenadas_origen', coordenadas_origen);
+    console.log('_infoSede', _infoSede);
     const coordenadas_destino = `${direccionClienteSeletedCoordenadas.latitude}, ${direccionClienteSeletedCoordenadas.longitude}`
     const subtotalCostoEntrega: any = await geolocationServices.calcularSubtotaCostoEntrega(coordenadas_origen, coordenadas_destino, _confgDelivery.parametros)
     console.log('subtotalCostoEntrega', subtotalCostoEntrega);
@@ -625,7 +634,7 @@ async function isDeliveryRecopilaDireccionEntrega(infoPedido: ClassInformacionPe
             if ( !isNaN(parseInt(userResponse)) ) {
                 userResponse = `Selecciono el numero ${userResponse}`
             } else {
-                console.log('_listDirecciones', _listDirecciones);
+                // console.log('_listDirecciones', _listDirecciones);
                 let _direccionElegida = null
                 try {
                     _direccionElegida = _listDirecciones.length > 0 ? infoFlowConfirma._listDirecciones.find((item: any) => item.direccion.includes(userResponse)) : null                     
@@ -637,6 +646,7 @@ async function isDeliveryRecopilaDireccionEntrega(infoPedido: ClassInformacionPe
                     isDireccionSeleted = true
                     await setearDireccionSeleccionada(_direccionElegida, infoCliente, infoPedido, infoFlowConfirma, chatGptConfirmaPedido, true)
                 } else {
+                    // sino hay direccion selecciona, entonces esta intentando escribir una nueva direccion
                     userResponse = `${userResponse}`
                 }
             }
@@ -647,9 +657,9 @@ async function isDeliveryRecopilaDireccionEntrega(infoPedido: ClassInformacionPe
 
     // si envia su localizacion                  
     if (userResponse.includes('_event_location')) {
-        console.log('_event_location');
+        // console.log('_event_location');
         const coordenadasCliente = `${ctx.message.locationMessage.degreesLatitude}, ${ctx.message.locationMessage.degreesLongitude}`
-        console.log('coordenadasCliente', coordenadasCliente);
+        // console.log('coordenadasCliente', coordenadasCliente);
         const rptCoordenadas = await getDireccionFromCoordenadas(coordenadasCliente, infoPedido, infoSede);
         if (rptCoordenadas) {        
             isDireccionSeleted = true    
@@ -671,7 +681,7 @@ async function getDireccionFromCoordenadas(coordenadas: string, infoPedido: Clas
 
 // devbuelve [isDireccionSeleted, rptMsj]   
 async function analizarRespuestaRecopiladorDatos(modelResponse, infoFlowConfirma, infoCliente, infoPedido: ClassInformacionPedido , chatGptConfirmaPedido, infoSede: ClassInfoSede): Promise<[boolean, string]>  {    
-    console.log('modelResponse', modelResponse);
+    // console.log('modelResponse', modelResponse);
     const isRptJson = modelResponse.includes('respuesta=')
     if (!isRptJson) {
         return [false, modelResponse]
@@ -683,8 +693,12 @@ async function analizarRespuestaRecopiladorDatos(modelResponse, infoFlowConfirma
 
         infoFlowConfirma.datosRecopiladosDelCliente = _datosRecopiladosDelClienteJSON
 
-        infoCliente.setNombrePila(_datosRecopiladosDelClienteJSON.nombre)
-        infoCliente.setNombre(_datosRecopiladosDelClienteJSON.nombre)
+        if (_datosRecopiladosDelClienteJSON.nombre ) {
+            infoCliente.setNombrePila(_datosRecopiladosDelClienteJSON.nombre)
+            infoCliente.setNombre(_datosRecopiladosDelClienteJSON.nombre)
+        }
+
+        
         // infoCliente.setCelular(_datosRecopiladosDelClienteJSON.telefono) // ya tengo
         infoPedido.setCliente(infoCliente)
 
@@ -699,26 +713,28 @@ async function analizarRespuestaRecopiladorDatos(modelResponse, infoFlowConfirma
             await setearDireccionSeleccionada(_datosRecopiladosDelClienteJSON, infoCliente, infoPedido, infoFlowConfirma, chatGptConfirmaPedido);
             
             const _confgDelivery = infoSede.getConfigDelivery()
-            console.log('_confgDelivery', _confgDelivery);
+            // console.log('_confgDelivery', _confgDelivery);
             const geolocationServices = new GeolocationServices()
             let direccionClienteSeletedCoordenadas = await <any>geolocationServices.getCoordenadas(_datosRecopiladosDelClienteJSON.direccion, _confgDelivery.ciudades)                        
 
-            console.log('direccionClienteSeletedCoordenadas', direccionClienteSeletedCoordenadas);
+            
             if (!direccionClienteSeletedCoordenadas) {
-                const _rptMsj = '🗺️ No pude encontrar la direccion en el mapa, escriba por favor una direccion válida, o envíe su ubicación. 🚩'
+                const _rptMsj = '🗺️ No pude encontrar la direccion en el mapa, escriba por favor una direccion válida, o envíe su *ubicación actual*. 🚩'
                 chatGptConfirmaPedido.setRowConversationLog(`recolector=${_rptMsj}`)                
                 // rptReturn = _rptMsj;
                 return [false, _rptMsj]
             }
 
-            direccionClienteSeletedCoordenadas.referencia = _datosRecopiladosDelClienteJSON.referencia_de_la_direccion
+            // direccionClienteSeletedCoordenadas.referencia = _datosRecopiladosDelClienteJSON.referencia_de_la_direccion
+            direccionClienteSeletedCoordenadas.referencia = _datosRecopiladosDelClienteJSON.referencia_de_la_direccion ? _datosRecopiladosDelClienteJSON.referencia_de_la_direccion || '': '';
+            // console.log('direccionClienteSeletedCoordenadas', direccionClienteSeletedCoordenadas);
             infoPedido.setDireccionGeolocalizada(direccionClienteSeletedCoordenadas)
 
             const _infoSede = infoSede.getSede()    
             const coordenadas_origen = `${_infoSede.latitude}, ${_infoSede.longitude}`
             const coordenadas_destino = `${direccionClienteSeletedCoordenadas.latitude}, ${direccionClienteSeletedCoordenadas.longitude}`
             const subtotalCostoEntrega: any = await geolocationServices.calcularSubtotaCostoEntrega(coordenadas_origen, coordenadas_destino, _confgDelivery.parametros)
-            console.log('subtotalCostoEntrega', subtotalCostoEntrega);
+            // console.log('subtotalCostoEntrega', subtotalCostoEntrega);
             if (subtotalCostoEntrega.success) {
                 infoPedido.setSubtotalCostoEntrega(subtotalCostoEntrega)
                 return [true, '👍 Listo.']

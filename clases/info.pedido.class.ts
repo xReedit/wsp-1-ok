@@ -70,6 +70,7 @@ export class ClassInformacionPedido {
                     nivelCambiarNombre: 0
                 },
                 variables_flow_confirmar_pedido: {
+                    datosFaltantesSegunCanalConsumo: '',
                     isRecopilandoDatos: false,
                     isClienteConfirmaDireccion: false,
                     isClienteEligeListDireccion: true,
@@ -302,6 +303,7 @@ export class ClassInformacionPedido {
                 nivelCambiarNombre: 0
             },
             variables_flow_confirmar_pedido: {
+                datosFaltantesSegunCanalConsumo: '',
                 isRecopilandoDatos: false,
                 isClienteConfirmaDireccion: false,
                 isClienteEligeListDireccion: true,

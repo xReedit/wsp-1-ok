@@ -67,10 +67,10 @@ export class ClassEstructuraPedido {
         const listImpresoras = infoSede.getlistImpresoras()
         let arrDatosReserva = {}
 
-        // const _infoCliente = infoPedido.getCliente();
-        // console.log('_infoCliente', _infoCliente);
+        // const __infoCliente = infoPedido.getCliente();
+        // console.log('_infoCliente', __infoCliente);
         // let infoCliente = new ClassCliente()
-        // infoCliente.setCliente(_infoCliente) 
+        // infoCliente.setCliente(__infoCliente) 
 
         let referenciaPedido = infoCliente.getNombre()
         let nomDireccion = ''
@@ -134,6 +134,8 @@ export class ClassEstructuraPedido {
             "is_print_subtotales": listImpresoras[0].isprint_subtotales_comanda
         }
 
+        // console.log('pheader', pheader);
+
         // rptImporteTotalPagar = arrSubtotales[arrSubtotales.length - 1].importe
 
         // array delivery
@@ -147,6 +149,7 @@ export class ClassEstructuraPedido {
 
             // datos de la direccion
             const _direccionGeolocalizada = infoPedido.getDireccionGeolocalizada()
+            // console.log('_direccionGeolocalizada', _direccionGeolocalizada);
             arrDatosDelivery.direccionEnvioSelected.ciudad = _direccionGeolocalizada.ciudad
             arrDatosDelivery.direccionEnvioSelected.departamento = _direccionGeolocalizada.departamento
             arrDatosDelivery.direccionEnvioSelected.provincia = _direccionGeolocalizada.provincia
@@ -240,6 +243,8 @@ export class ClassEstructuraPedido {
             dataDescuento: [], // lista de ids de descuento para restar cantidad num_pedidos
             listPrinters: arrPrint.listPrinters
         };
+
+        // console.log('pedidoEnviar', pedidoEnviar);
 
         // seteamos para tenerlo listo para enviar
         infoPedido.setPedidoEnviar(pedidoEnviar);

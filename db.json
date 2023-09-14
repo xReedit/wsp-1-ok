@@ -1,34 +1,35 @@
 [
   {
-    "ref": "87c84a91-ae9e-43eb-9d7e-2876b7017c5b",
-    "keyword": "26b38024c87e252e8e5db71bebdc0ab6",
-    "answer": "quiero 2 tilapias frita",
+    "ref": "02ff1c23-d7a3-4a7c-a679-7492d8fc9fba",
+    "keyword": "9e7fce48646c5c9513b4e6f818397379",
+    "answer": "quiero que me envies un comprobante",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "b07fac4ab8d2e196a763a525b77b4890"
+    "refSerialize": "7fa47f2c86db4f896178fe33f3257847"
   },
   {
-    "ref": "c1d75424-d649-4269-8481-f41040be7368",
-    "keyword": "b07fac4ab8d2e196a763a525b77b4890",
-    "answer": "quiero 2 tilapias frita",
+    "ref": "2dfa3bdd-460e-4282-bc99-9b513855a544",
+    "keyword": "7fa47f2c86db4f896178fe33f3257847",
+    "answer": "quiero que me envies un comprobante",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "b07fac4ab8d2e196a763a525b77b4890"
+    "refSerialize": "7fa47f2c86db4f896178fe33f3257847"
   },
   {
-    "ref": "c95dc958-7571-4d81-9543-e65b36bbbd8c",
-    "answer": "¿Desea algo más?",
+    "ref": "b880fd60-4d0d-4d95-adaa-cdd3915798c9",
+    "answer": "Por favor digame el *RUC* o *DNI* del cliente -a quien fue emitido-",
     "options": {
       "media": null,
       "buttons": [],
-      "capture": false
+      "capture": false,
+      "delay": 0
     },
     "from": "51934746830",
-    "refSerialize": "900d7c7a53099aafec14a3829a361bc8"
+    "refSerialize": "608da932fecaa2801e1e4921576e5c58"
   },
   {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
+    "ref": "ans_ed6a6d2f-a0cc-42cf-bd69-fa7868832b42",
+    "keyword": "ans_c66e67ba-b4a4-4068-87e0-2b7cb0090354",
     "answer": "...",
     "options": {
       "media": null,
@@ -40,21 +41,13 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
+    "refSerialize": "30dc04dab1152d571683b666d3821666",
     "from": "51934746830"
   },
   {
-    "ref": "9f87989f-525a-4a60-9928-25d21092fa27",
-    "keyword": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "answer": "no",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "196d1c4297b3cc409a816659f65c2beb"
-  },
-  {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
-    "answer": "Confirme, esto es lo que entendi:\n2 tilapia frita con patacones\n\nEscriba *CONFIRMAR* para continuar.",
+    "ref": "ans_ed6a6d2f-a0cc-42cf-bd69-fa7868832b42",
+    "keyword": "ans_c66e67ba-b4a4-4068-87e0-2b7cb0090354",
+    "answer": "...",
     "options": {
       "media": null,
       "buttons": [],
@@ -65,21 +58,21 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
+    "refSerialize": "30dc04dab1152d571683b666d3821666",
     "from": "51934746830"
   },
   {
-    "ref": "cec3123b-ac44-461a-b34b-1bdd0243805a",
-    "keyword": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "answer": "confirmar",
+    "ref": "4aa8443c-3b32-4933-8692-4c2036eaec72",
+    "keyword": "30dc04dab1152d571683b666d3821666",
+    "answer": "20600161050",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "eb556648dae407b0c7a0726be0954070"
+    "refSerialize": "2689e91a67b6472e0e227260f3be3cd0"
   },
   {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
-    "answer": "*Ahora, seleccione el canal, escriba:* \n*1* Para Delivery 🛵\n*2* Para Recoger 👜\n*3* Para Reservar 🕜",
+    "ref": "ans_ed6a6d2f-a0cc-42cf-bd69-fa7868832b42",
+    "keyword": "ans_c66e67ba-b4a4-4068-87e0-2b7cb0090354",
+    "answer": "Ahora necesito el numero de comprobante\n*Ejemplo:F001-150*\n O sino tiene el numero me pasa la fecha de consumo\n*Ejemplo: 15/05/2023*",
     "options": {
       "media": null,
       "buttons": [],
@@ -90,21 +83,21 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
+    "refSerialize": "30dc04dab1152d571683b666d3821666",
     "from": "51934746830"
   },
   {
-    "ref": "aa0c9c18-5f30-4c27-9b5c-0823dc5d6aee",
-    "keyword": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "answer": "1",
+    "ref": "8e8bbf77-0805-48eb-ab88-f3cb22319a2a",
+    "keyword": "30dc04dab1152d571683b666d3821666",
+    "answer": "13/09/2023",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "290236b1d481a790a200ea6e94b2122a"
+    "refSerialize": "c1f332ffe0f190f6f57440697f48e427"
   },
   {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
-    "answer": "Tenemos registrado la siguiente direccion:\n*jr bolivar 123*\n\nSe la enviamos a esta direccion? escriba: *Si* o *No*",
+    "ref": "ans_ed6a6d2f-a0cc-42cf-bd69-fa7868832b42",
+    "keyword": "ans_c66e67ba-b4a4-4068-87e0-2b7cb0090354",
+    "answer": "Esto es lo que entendi:\nRuc: 20600161050\nFecha Comprobante: 13/09/2023\n\n¿Es correcto? escriba *Si* o *No*",
     "options": {
       "media": null,
       "buttons": [],
@@ -115,21 +108,21 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
+    "refSerialize": "30dc04dab1152d571683b666d3821666",
     "from": "51934746830"
   },
   {
-    "ref": "f18e4183-6c57-4217-942f-c5ff2b9873e1",
-    "keyword": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "answer": "otra direccion",
+    "ref": "ec230c00-6462-46ee-b9db-250a6a9e793c",
+    "keyword": "30dc04dab1152d571683b666d3821666",
+    "answer": "si",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "ab249b5d644a29a6d52125e38b6b7de0"
+    "refSerialize": "715ca38ec28b8dabb30e75e511c57a3a"
   },
   {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
-    "answer": "Por favor, proporcione la dirección completa para el pedido de entrega a domicilio.",
+    "ref": "ans_ed6a6d2f-a0cc-42cf-bd69-fa7868832b42",
+    "keyword": "ans_c66e67ba-b4a4-4068-87e0-2b7cb0090354",
+    "answer": "Le adjunte el comprobante solicitado, también lo puedo consultar en papaya.com.pe\nQue tenga un buen dia! 🙂",
     "options": {
       "media": null,
       "buttons": [],
@@ -140,82 +133,7 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "from": "51934746830"
-  },
-  {
-    "ref": "cacb8aca-fd42-4532-bef5-17e1bb10cc7a",
-    "keyword": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "answer": "jr amalaya 12312321",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "80de70e8d282545fb47196dabe53ac97"
-  },
-  {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
-    "answer": "Gracias por proporcionar la dirección completa. Ahora necesito que me proporciones una referencia para ubicar mejor la dirección.",
-    "options": {
-      "media": null,
-      "buttons": [],
-      "capture": true,
-      "child": null,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "from": "51934746830"
-  },
-  {
-    "ref": "d1d36eeb-d354-45aa-9c0d-2ff341cc99b7",
-    "keyword": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "answer": "asdasdsa",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "39ee555e1eea9da93260093b43bca697"
-  },
-  {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
-    "answer": "🗺️ No pude encontrar la direccion en el mapa, escriba por favor una direccion válida, o envíe su ubicación. 🚩",
-    "options": {
-      "media": null,
-      "buttons": [],
-      "capture": true,
-      "child": null,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "from": "51934746830"
-  },
-  {
-    "ref": "aed6efa0-c3de-495b-b0bf-dcde64e5239e",
-    "keyword": "6a056506fd6fbe7ca12548ec6f1d7998",
-    "answer": "_event_location__be7a2746-70a3-4440-815b-7de772abd9f0",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "a9461aeff5b1b11f909d060c34a6f764"
-  },
-  {
-    "ref": "ans_82d0e616-f16c-424e-a53d-228134fedead",
-    "keyword": "ans_3edf0710-2129-42e3-ad6f-d9199452d618",
-    "answer": "El costo total del pedido es: *S/.48.00*\n\n*platos criollos*                         .\n2 tilapia frita con pata....40.00\n\nsub total.....................................43.64\ni.g.v............................................. 4.36\ncosto de entrega....................... 4.00\ntaper............................................. 4.00\ntotal.............................................48.00\n\n\nSi esta de acuerdo responda *OK* para continuar.",
-    "options": {
-      "media": null,
-      "buttons": [],
-      "capture": true,
-      "child": null,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "6a056506fd6fbe7ca12548ec6f1d7998",
+    "refSerialize": "30dc04dab1152d571683b666d3821666",
     "from": "51934746830"
   }
 ]

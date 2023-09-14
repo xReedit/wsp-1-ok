@@ -256,6 +256,29 @@ export function extraerSoloCamposFaltantes(datos: any): any {
     return camposFaltantes;
 }
 
+export function transformarFecha(textoConFecha) {
+    // Expresión regular para buscar el formato de fecha "dd/mm/yyyy" en el texto
+    const regexFecha = /(\d{2}\/\d{2}\/\d{4})/;
+
+    // Buscar la fecha en el texto
+    const match = regexFecha.exec(textoConFecha);
+
+    // Si se encuentra una fecha válida en el texto, transformarla
+    if (match) {
+        const fechaOriginal = match[0];
+        const [dia, mes, año] = fechaOriginal.split('/');
+        const fechaTransformada = `${dia}-${mes}-${año}`;
+        return fechaTransformada;
+    }
+
+    // Si no se encuentra una fecha válida, devolver un mensaje de error
+    return '';
+}
+
+export function fechaGuionASlash(fecha: string) {
+    return fecha.replace(/-/g, '/');
+}
+
 // export const soundex = (word: string): string => {
 //     const mapping: Record<string, string> = {
 //         A: "0", E: "0", I: "0", O: "0", U: "0", Y: "0",
