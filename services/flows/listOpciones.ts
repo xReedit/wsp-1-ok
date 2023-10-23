@@ -102,6 +102,10 @@ export const listOptions = (
             rptOption = `Excelente 🫡.`;
             paramsFlowInteraction.nivel_titulo = tituloNivel.deseaRealizarUnPedido
             break;
+        case '10': // desea hacer una reserva
+            rptOption = `🫡 Ok, para hacer la reserva primero me dice que desea reservar y luego le voy guiando hasta terminar la orden.`;
+            paramsFlowInteraction.nivel_titulo = tituloNivel.deseaHacerUnaReserva
+            break;
     }
 
     return rptOption;

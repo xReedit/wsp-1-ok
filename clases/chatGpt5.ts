@@ -222,7 +222,7 @@ export class ChatGPT {
         this.conversationLog[this.rolResponde].push(row);
         // this.conversationLog.push(row);         
         this.infoPedido.setConversationLogUser(this.rolResponde, this.conversationLog[this.rolResponde]);
-        console.log('Conversacion == ', this.conversationLog[this.rolResponde]);
+        // console.log('Conversacion == ', this.conversationLog[this.rolResponde]);
     }
 
     public getConversationLog(): string[] {

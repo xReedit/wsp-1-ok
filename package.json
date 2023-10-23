@@ -2,6 +2,7 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@types/dotenv": "^8.2.0",
+    "@types/node-cron": "^3.0.10",
     "@whiskeysockets/baileys": "^6.4.1",
     "axios": "^1.4.0",
     "chatgpt": "^5.2.5",
@@ -11,6 +12,7 @@
     "fuse.js": "^6.6.2",
     "luxon": "^3.3.0",
     "mime-types": "2.1.35",
+    "node-cron": "^3.0.2",
     "nodemon": "^2.0.22",
     "socket.io": "^4.6.2",
     "sqlite3": "^5.1.6",

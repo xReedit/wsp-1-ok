@@ -147,24 +147,31 @@ export function insertarPlatosEnSeccion(laCarta: any[], platosEcontrados: any[])
 }
 
 // Función para buscar coincidencias exactas utilizando include
-function primeraBusqueda(platosBuscar: any[], lista: any[], encontrados: any): any[] {
-    platosBuscar.forEach((plato) => {
-        const platoEncontrado = lista.find((item) => item.des.toLowerCase() === plato.des.toLowerCase());
-        if (platoEncontrado) {
-            plato.encontrado = true;
-            plato.iditem = platoEncontrado.iditem
+function primeraBusqueda(platosBuscar: any[], lista: any[], encontrados: any): any[] {    
+    
+    try {
+            
+        platosBuscar.forEach((plato) => {
+            const platoEncontrado = lista.find((item) => item.des.toLowerCase() === plato.des.toLowerCase());
+            if (platoEncontrado) {
+                plato.encontrado = true;
+                plato.iditem = platoEncontrado.iditem
 
-            // verifica si ya esta en lista de encontrados si esta que solo sume la cantidad
-            const _platoEnEncontrados = encontrados.find(x => x.iditem === platoEncontrado.iditem)
-            if (_platoEnEncontrados) {
-                _platoEnEncontrados.cantidad_seleccionada += parseInt(plato.cantidad)
-            } else {
-                encontrados.push(platoEncontrado)
+                // verifica si ya esta en lista de encontrados si esta que solo sume la cantidad
+                const _platoEnEncontrados = encontrados.find(x => x.iditem === platoEncontrado.iditem)
+                if (_platoEnEncontrados) {
+                    _platoEnEncontrados.cantidad_seleccionada += parseInt(plato.cantidad)
+                } else {
+                    encontrados.push(platoEncontrado)
+                }
+
+                // encontrados.push(platoEncontrado)
             }
+        });
 
-            // encontrados.push(platoEncontrado)
-        }
-    });
+    } catch (error) {
+        console.error(error);
+    }
 
     return encontrados
 }

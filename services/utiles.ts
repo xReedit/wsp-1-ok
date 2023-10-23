@@ -104,10 +104,18 @@ export const handlerAI = async (ctx) => {
     await fs.writeFile(pathTmpOgg, buffer);
     await convertOggMp3(pathTmpOgg, pathTmpMp3);
     const text = await voiceToText(pathTmpMp3);
+
+    // luego de obtner el texto, eliminar los archivos temporales de audio
+    await fs.unlink(pathTmpOgg);
+    await fs.unlink(pathTmpMp3);    
+
+
     return text; //el habla1!!
     /**
      * OMITIR
      */
+
+    //
 };
 
 
@@ -151,6 +159,23 @@ export function obtenerHoraActualPorZonaHoraria(_timeZone: string = 'America/Lim
     // const horaActual = new Date(Number(anio), Number(mes) - 1, Number(dia), Number(horaParte), Number(minutosParte), Number(segundosParte));
 
     return new Date(stringDate);
+}
+
+// si pasa quince minutos activa al bot
+export function isTimeActivedBot(_fechaHora: string): boolean {
+    // Obtener la fecha y hora actual
+    const fechaHora = new Date(_fechaHora)
+    const ahora = new Date();
+
+    // Calcular la diferencia en milisegundos
+    const diferenciaEnMilisegundos = ahora.getTime() - fechaHora.getTime();
+
+    // Convertir la diferencia a minutos
+    const diferenciaEnMinutos = diferenciaEnMilisegundos / (1000 * 60);
+    console.log('diferenciaEnMinutos', diferenciaEnMinutos);
+
+    // Verificar si han pasado 15 minutos
+    return diferenciaEnMinutos >= 15;
 }
 
 export function obtenerFechaHoraPorZonaHoraria(_timeZone: string = 'America/Lima'): Date {

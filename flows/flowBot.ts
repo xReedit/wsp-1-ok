@@ -7,7 +7,7 @@ export const flowBot = (infoSede: ClassInfoSede, database: SqliteDatabase) => {
     return addKeyword(EVENTS.WELCOME)
     .addAction(
         async (ctx, { endFlow, fallBack, flowDynamic, gotoFlow, provider }) => {            
-            database.delete(ctx.from)
+            // database.delete(ctx.from)
             return await coreFlow(true, ctx, infoSede, database, { provider, fallBack, endFlow, flowDynamic, gotoFlow })              
         }
     )

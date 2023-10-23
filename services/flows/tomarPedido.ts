@@ -6,11 +6,12 @@ import { PROMPTS } from "../../prompts/prompts"
 import { buscarCoincidencias, insertarPlatosEnSeccion } from "../search.plato.services"
 import { handlerAI } from "../utiles"
 import endpoint from '../../endpoints.config';
+import { noEntendido } from "./noEntendido"
 
 let msjFormatoPedido = `De prefencia en una sola línea y en este formato:\n*cantidad nombre_del_producto(indiciaciones)*\nPor ejemplo:\nQuiero *2 ceviches(1 sin aji), 1 pollo al horno*`
 
 
-export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, _infoSede: ClassInfoSede, { provider, flowDynamic }) => {
+export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, _infoSede: ClassInfoSede, userResponseVoice: string = '', { provider, flowDynamic }) => {
     // console.log('tomarPedido')
     
     let infoFlowPedido = infoPedido.getVariablesFlowPedido()
@@ -22,21 +23,21 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
     const sock = await provider.getInstance(jid)
     await sock.presenceSubscribe(jid)
     await sock.sendPresenceUpdate('composing', jid)
-    let userResponse = ctx.body.toLowerCase().trim()
+    let userResponse = userResponseVoice !== '' ? userResponseVoice : ctx.body.toLowerCase().trim()
 
 
-    // console.log('infoFlowPedido.userResponsePrevius', infoFlowPedido.userResponsePrevius);
+    // console.log('infoFlowPedido.userResponsePrevius', infoFlowPedido.userResponsePrevius);    
     userResponse = infoFlowPedido.userResponsePrevius === '' ? userResponse : infoFlowPedido.userResponsePrevius
     infoFlowPedido.userResponsePrevius = ''
 
     // si es mensaje de voz
-    if (userResponse.includes('event_voice')) {
-        await flowDynamic("dame un momento para escucharte...🙉");
-        console.log("🤖 voz a texto....");
-        const text = await handlerAI(ctx);
-        console.log(`🤖 Fin voz a texto....[TEXT]: ${text}`);
-        userResponse = text
-    }
+    // if (userResponse.includes('event_voice')) {
+    //     await flowDynamic("dame un momento para escucharte...🙉");
+    //     console.log("🤖 voz a texto....");
+    //     const text = await handlerAI(ctx);
+    //     console.log(`🤖 Fin voz a texto....[TEXT]: ${text}`);
+    //     userResponse = text
+    // }
 
     // espera a confirmar el pedido
     // console.log('infoFlowPedido.isWaitConfirmar', infoFlowPedido.isWaitConfirmar);
@@ -48,6 +49,8 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
         if (isConfirmaPedido) {
             infoFlowPedido.isWaitConfirmar = false
             paramsFlowInteraction.nivel_titulo = tituloNivel.confirmarPedido
+
+            infoFlowPedido.intentosEntederPedido = 0;
             return 'Listo 👍'
         }
     }
@@ -110,18 +113,37 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
     const opSelected = posibleRespuesta.find(item => modelResponse.includes(item.resp))
 
     if (opSelected === undefined) {     
-        infoFlowPedido.intentosEntederPedido += 1
+        // infoFlowPedido.intentosEntederPedido += 1
+        const rptModelFlow = await noEntendido(paramsFlowInteraction, ctx, infoPedido, infoSede, true, { provider }) 
+
+        if (rptModelFlow.desactivar === true) {
+            return rptModelFlow.msj
+        }
+
         return rptReturn = 'No entendí su respuesta, repita por favor.';
     }
 
-    if (infoFlowPedido.intentosEntederPedido > 2) {
-        rptReturn = enviarClienteTiendaLinea(infoPedido, infoSede.getSede().idsede, infoSede.getLinkCarta(), endpoint.url_tienda_linea)
+    // if (infoFlowPedido.intentosEntederPedido > 2) {
+    //     rptReturn = enviarClienteTiendaLinea(infoPedido, infoSede.getSede().idsede, infoSede.getLinkCarta(), endpoint.url_tienda_linea)
 
-        infoFlowPedido.isWaitConfirmar = false
-        infoFlowPedido.intentosEntederPedido = 0
+    //     infoFlowPedido.isWaitConfirmar = false
+    //     infoFlowPedido.intentosEntederPedido = 0
 
-        sock.sendMessage(jid, { text: rptReturn })
-        return 'go tienda en linea';
+    //     await sock.sendMessage(jid, { text: rptReturn })
+    //     return 'go tienda en linea';
+    // }
+
+    // const isOptionSeletedNoEntendio = opSelected === undefined ? true : opSelected.op ? opSelected.op === 5 ? true : false : true   
+
+    if (opSelected === undefined || opSelected?.op === 5) {     
+        // infoFlowPedido.intentosEntederPedido += 1
+        const rptModelFlow = await noEntendido(paramsFlowInteraction, ctx, infoPedido, infoSede, true, { provider }) 
+
+        if (rptModelFlow.desactivar === true) {
+            return rptModelFlow.msj
+        }
+
+        return rptReturn = 'No entendí su respuesta, verifique la ortografía y vuelva a escribirlo.'
     }
 
     switch (opSelected.op) {
@@ -132,12 +154,14 @@ export const tomarPedido = async (ctx: any, infoPedido: ClassInformacionPedido, 
             chatGpt.setRowConversationLog(`mesero=escriba confirmar, para enviar su pedido. O desea agregar algo mas?`)
             // return await fallBack(rptReturn);
             break;
-        case 5: // no entendi lo que dijo el cliente
-            rptReturn = 'No entendí su respuesta, verifique la ortografía y vuelva a escribirlo.'
-            chatGpt.setRowConversationLog(`mesero=${rptReturn}`)
-            infoFlowPedido.intentosEntederPedido += 1
-            break;
+        // case 5: // no entendi lo que dijo el cliente
+        //     rptReturn = 'No entendí su respuesta, verifique la ortografía y vuelva a escribirlo.'
+        //     chatGpt.setRowConversationLog(`mesero=${rptReturn}`)
+        //     infoFlowPedido.intentosEntederPedido += 1
+        //     break;
     }
+
+    
 
     return rptReturn;
 

@@ -1,3 +1,4 @@
+import { obtenerHoraActualPorZonaHoraria, obtenerHoraMinutosPorZonaHoraria3 } from "../services/utiles";
 import { ClassCliente } from "./cliente";
 
 export enum tituloNivel {
@@ -14,6 +15,7 @@ export enum tituloNivel {
     actualizarNombre = "actualizarNombre",
     estarAtento = "estarAtento",
     deseaRealizarUnPedido = "deseaRealizarUnPedido",
+    deseaHacerUnaReserva = "deseaHacerUnaReserva",
 }
 
 interface EstructuraInformacion {    
@@ -34,6 +36,10 @@ interface EstructuraInformacion {
         variables_flow_interaccion: any;
         variables_flow_confirmar_pedido: any;    
         conversationLog: { [key: string]: any[] };
+        botOnline: {
+            online: Number,
+            time_offline: any
+        }
 }
 
 export class ClassInformacionPedido {    
@@ -63,6 +69,7 @@ export class ClassInformacionPedido {
                     isWaitResponse: false,
                     isWaitConfirmar: false,
                     intentosEntederPedido: 0,
+                    intentosEntederInicio: 0,
                     optionPrevius: '',
                     userResponsePrevius: '',
                     nivelConfirmarPedido: 0, // 0 enviar canales de consumo 1 seleccionar canal 2 recopilar datos cliente 3 tipo de pago 
@@ -86,8 +93,16 @@ export class ClassInformacionPedido {
                     nivel: 0,
                     showOptionBotNoEntendio: false // si no entiende le muestra las opciones que le puede ayudar, y espera un numero de opcion
                 },
-            conversationLog:{}
+            conversationLog:{},
+            botOnline: {
+                online: 1,
+                time_offline: ''
+            }
         };
+    }
+
+    public getEstructuraInfo(): EstructuraInformacion {
+        return this.estructuraInfo;
     }
 
     public setConversationLog(conversationLog: any) {
@@ -271,6 +286,22 @@ export class ClassInformacionPedido {
         return this.estructuraInfo.variables_flow_interaccion;
     }
 
+    // cuando se desactiva el bot en el chat es por 10min
+    // a la espera de asistente humano lo atienda
+    public setBotOnline(value: boolean) {
+        this.estructuraInfo.botOnline.online = value ? 1 : 0        
+        if (value === false) { // si esta offline
+            // la hora que entra en offline para luego calcular el tiempo transucrrido
+            this.estructuraInfo.botOnline.time_offline = obtenerHoraMinutosPorZonaHoraria3('America/Lima').fechaActual
+        } else {
+            this.estructuraInfo.botOnline.time_offline = ''
+        }
+    }
+
+    public getBotOnLine() {
+        return this.estructuraInfo.botOnline;
+    }
+
     // funcion que resetea la informacion del pedido menos la del cliente
     public resetInfoPedido() {
         this.estructuraInfo = {            
@@ -296,6 +327,7 @@ export class ClassInformacionPedido {
                 isWaitResponse: false,
                 isWaitConfirmar: false,
                 intentosEntederPedido: 0,
+                intentosEntederInicio: 0,
                 optionPrevius: '',
                 userResponsePrevius: '',
                 nivelConfirmarPedido: 0, // 0 enviar canales de consumo 1 seleccionar canal 2 recopilar datos cliente 3 tipo de pago 
@@ -319,7 +351,11 @@ export class ClassInformacionPedido {
                 nivel: 0,
                 showOptionBotNoEntendio: false
             }, 
-            conversationLog:{}
+            conversationLog:{},
+            botOnline: {
+                online: 1,
+                time_offline: ''
+            }
         };
     }
 

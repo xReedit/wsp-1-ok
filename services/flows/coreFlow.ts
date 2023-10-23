@@ -12,34 +12,70 @@ import { enviarCarta } from "./verCarta";
 import { enviarComprobante } from "./enviarComprobante";
 import { cambiarNombreCliente } from "./cambiarNombreCliente";
 import { noEntendido } from "./noEntendido";
-import { getOptionFromNumber } from "./esperaNumeroOpcion";
+import { getListOptionsBot, getOptionFromNumber } from "./esperaNumeroOpcion";
+import { handlerAI, isTimeActivedBot } from "../utiles";
 
 export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassInfoSede, database: SqliteDatabase, { provider, fallBack, endFlow, flowDynamic, gotoFlow }) => {    
     let msjFormatoPedido = `De prefencia en una sola línea y en este formato:\n*cantidad nombre_del_producto(indiciaciones)*\nPor ejemplo:\nQuiero *2 ceviches(1 sin aji), 1 pollo al horno*`
     let mensageTomarPedido = 'Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\n' + msjFormatoPedido
     let modelResponse = ''
     let userResponse = ctx.body.trim();
+    let userResponseVoice = ''
     const ctxFrom = ctx.from
+
+    // el id del usuario va ser  ctxFrom + idsede
+    const idUserTable = `${ctxFrom}-${infoSede.getSede().idsede}` 
+    console.log('idUsuario', idUserTable);
 
     console.log('userResponse', userResponse);
 
     const _num_telefono = ctxFrom
     const isSaludo = ['hola', 'Buenas', 'Buen dia', 'Buenos', 'ola', 'beunas'].includes(userResponse.toLowerCase())
 
+    console.log('ctxFrom', ctxFrom);
 
     let infoPedido = new ClassInformacionPedido()
-    infoPedido = await database.getInfoPedido(ctxFrom)
-    infoPedido.setSede(infoSede)
+    // infoPedido = await database.getInfoPedido(ctxFrom)
+    infoPedido = await database.getInfoPedido(idUserTable)
+    // infoPedido.setSede(infoSede)
+
     
     let paramsFlowInteraction = infoPedido.getVariablesFlowInteraccion()
     let infoFlowPedido = infoPedido.getVariablesFlowPedido()           
     
-    guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+    guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
+
+
+    // console.log('infoPedido ini', infoPedido);
+    // verificar si el bot esta online
+    const _statusBot = infoPedido.getBotOnLine()
+    console.log('_statusBot', _statusBot);
+    if (_statusBot.online === 0) {
+        const _isTimeActivedBot = isTimeActivedBot(_statusBot.time_offline.toString())
+        console.log('_isTimeActivedBot', _isTimeActivedBot);
+        if (_isTimeActivedBot) {
+            infoPedido.setBotOnline(true)
+        } else {
+            guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
+            return false;
+        }
+    }
+
+    console.log('paso sigueinte');
 
     const jid = ctx.key.remoteJid
     const sock = await provider.getInstance(jid)
     await sock.presenceSubscribe(jid)
     await sock.sendPresenceUpdate('composing', jid)
+
+    if (userResponse.includes('event_voice')) {
+        await flowDynamic("dame un momento para escucharte...🙉");
+        console.log("🤖 voz a texto....");
+        const text = await handlerAI(ctx);
+        console.log(`🤖 Fin voz a texto....[TEXT]: ${text}`);
+        userResponseVoice = text
+        userResponse = userResponseVoice
+    }
     
     // SALUDO incializa el flujo
     if (paramsFlowInteraction.nivel_titulo === tituloNivel.saludoIncial || paramsFlowInteraction.nivel_titulo === tituloNivel.estarAtento) {        
@@ -49,7 +85,7 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
             await saludoInicial(infoPedido, _num_telefono, sock, jid, isSaludo, userResponse)            
             if (isSaludo) {                
                 paramsFlowInteraction.nivel_titulo = tituloNivel.estarAtento
-                guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+                guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
                 
                 return await getResponseCore(isFromAction, flowDynamic, fallBack, 'Dime lo que necesitas.') 
                 // return await fallBack('Dime lo que necesitas.')
@@ -76,20 +112,21 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
         await sock.sendPresenceUpdate('composing', jid)
 
         const rptOption = listOptions(infoPedido, infoFlowPedido, paramsFlowInteraction, userResponse, modelResponse, isSaludo)        
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)        
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)        
 
         if (!isSaludo || rptOption !== '') {
             await sock.sendMessage(jid, { text: rptOption })
         }
     } 
 
-    // el cliente tiene la intencion de realizar un pedido
+    // el cliente tiene la intencion de realizar un pedido o reserva
     // le ofrecemos ver la carta o esperar a que le tomemos el pedido
-    if (paramsFlowInteraction.nivel_titulo === tituloNivel.deseaRealizarUnPedido) { 
+    if (paramsFlowInteraction.nivel_titulo === tituloNivel.deseaRealizarUnPedido || paramsFlowInteraction.nivel_titulo === tituloNivel.deseaHacerUnaReserva) { 
         console.log('desea hacer un pedido');
-        const rptModelFlow = `¿Ya sabe que pedir o desea ver la carta? 🎴`
+        // const rptModelFlow = `¿Ya sabe que pedir o desea ver la carta? 🎴`
+        const rptModelFlow = `Digame su pedido. O desea ver la carta? 🎴`
         paramsFlowInteraction.nivel_titulo = tituloNivel.estarAtento
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
         await fallBack(rptModelFlow)
     }
 
@@ -101,7 +138,7 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
         // chequea el horario
         const [isCartaActiva, listCartasActivas, msjCarta] = await consultarHorario(infoSede)
         if (!isCartaActiva) {
-            guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+            guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
             return await endFlow(msjCarta)
         }
 
@@ -110,10 +147,10 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
             rptModelFlow = mensageTomarPedido
             paramsFlowInteraction.showOptionBotNoEntendio = false
         } else {
-            rptModelFlow = await tomarPedido(ctx, infoPedido, infoSede, { provider, flowDynamic })
+            rptModelFlow = await tomarPedido(ctx, infoPedido, infoSede, userResponseVoice, { provider, flowDynamic })
         }
 
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
 
         if (rptModelFlow === 'go tienda en linea' ) {
             await endFlow()
@@ -131,8 +168,8 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
 
     // confimar pedido
     if (paramsFlowInteraction.nivel_titulo === tituloNivel.confirmarPedido) {        
-        const rptModelFlow = await confimarPedido(paramsFlowInteraction, ctx, infoPedido, infoSede, { provider, flowDynamic })        
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)        
+        const rptModelFlow = await confimarPedido(paramsFlowInteraction, ctx, infoPedido, infoSede, userResponseVoice, { provider, flowDynamic })        
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)        
 
         await fallBack(rptModelFlow)
     }
@@ -149,13 +186,13 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
             await enviarCarta(listCartasActivas, sock, jid)
             infoFlowPedido.userResponsePrevius = '' // no es pedido
             // paramsFlowInteraction.nivel_titulo = tituloNivel.hacerPedido
-            guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+            guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
             
             // await fallBack(mensageTomarPedido)
             return await getResponseCore(isFromAction, flowDynamic, fallBack, mensageTomarPedido) 
         } else {
             // paramsFlowInteraction.nivel_titulo = tituloNivel.saludoIncial            
-            guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+            guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
             await endFlow(msjCarta)
         }
 
@@ -164,7 +201,7 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
     // consulatar plato
     if (paramsFlowInteraction.nivel_titulo === tituloNivel.consultarPlato || paramsFlowInteraction.nivel_titulo === tituloNivel.consultarQueHay) {        
         const rptModelFlow = await consultarDisponibilidadPlato(paramsFlowInteraction,ctx,infoPedido,infoSede, { provider })
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
         // await fallBack(rptModelFlow)
         return await getResponseCore(isFromAction, flowDynamic, fallBack, rptModelFlow) 
     }
@@ -174,7 +211,7 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
     if (paramsFlowInteraction.nivel_titulo === tituloNivel.enviarComprobante) {          
         paramsFlowInteraction.showOptionBotNoEntendio = false
         const rptModelFlow = await enviarComprobante(paramsFlowInteraction, ctx, infoPedido, infoSede, { provider })
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
         // await fallBack(rptModelFlow)
         // console.log('comprobante');      
         return await getResponseCore(isFromAction, flowDynamic, fallBack, rptModelFlow) 
@@ -186,7 +223,7 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
 
         const rptModelFlow = soloHorariosAtencion(infoSede) 
         paramsFlowInteraction.nivel_titulo = tituloNivel.estarAtento
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)        
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)        
         // await fallBack(rptModelFlow)
         return await getResponseCore(isFromAction, flowDynamic, fallBack, rptModelFlow) 
     }
@@ -194,15 +231,24 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
     // solicitar nombre
     if (paramsFlowInteraction.nivel_titulo === tituloNivel.solicitarNombre || paramsFlowInteraction.nivel_titulo === tituloNivel.actualizarNombre) {
         const rptModelFlow = await cambiarNombreCliente(paramsFlowInteraction, ctx, infoPedido, infoSede, { provider })
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)        
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)        
         // await fallBack(rptModelFlow)    
         return await getResponseCore(isFromAction, flowDynamic, fallBack, rptModelFlow)     
     }
 
     // no entendio muestra las opcione que puede ayudar
-    if (paramsFlowInteraction.nivel_titulo === tituloNivel.noEntendido && !isSaludo) {        
-        const rptModelFlow = await noEntendido(paramsFlowInteraction, ctx, infoPedido, infoSede, { provider })
-        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, ctxFrom, database)        
+    if (paramsFlowInteraction.nivel_titulo === tituloNivel.noEntendido && !isSaludo) {     
+        console.log('no entendio ==== >')
+
+        paramsFlowInteraction.nivel_titulo = tituloNivel.estarAtento
+        paramsFlowInteraction.showOptionBotNoEntendio = true   
+
+        const _rptModelFlow = await noEntendido(paramsFlowInteraction, ctx, infoPedido, infoSede, false, { provider }) 
+        const rptModelFlow = _rptModelFlow.msj
+
+        // console.log('infoPedido guarda', infoPedido);
+
+        guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)        
         // await fallBack(rptModelFlow)   
         return await getResponseCore(isFromAction, flowDynamic, fallBack, rptModelFlow)      
     }
@@ -215,9 +261,9 @@ async function getResponseCore(isFromAction, flowDynamic, fallBack, msj) {
 }
 
 
-function guardarDatosLocalBD(infoPedido: ClassInformacionPedido, infoFlowPedido: any, paramsFlowInteraction: any, from: string, database: SqliteDatabase) {
+function guardarDatosLocalBD(infoPedido: ClassInformacionPedido, infoFlowPedido: any, paramsFlowInteraction: any, idUserTable: string, database: SqliteDatabase) {
     infoPedido.setVariablesFlowPedido(infoFlowPedido)
     infoPedido.setVariablesFlowInteraccion(paramsFlowInteraction)     
-    infoPedido.setVariablesFlowConfirmarPedido(infoPedido.getVariablesFlowConfirmarPedido())
-    database.guadarInfoDataBase(infoPedido, from)
+    infoPedido.setVariablesFlowConfirmarPedido(infoPedido.getVariablesFlowConfirmarPedido())    
+    database.guadarInfoDataBase(infoPedido, idUserTable)
 }  

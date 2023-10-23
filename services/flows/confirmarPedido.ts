@@ -8,7 +8,7 @@ import endpoint from '../../endpoints.config';
 import { GeolocationServices } from "../geolocation.service"
 import { capitalize, extraerSoloCamposFaltantes, formatPadArrayToString, getListaProductosArrayToString, getObjectKeys, handlerAI, obtenerClavesSinDatos } from "../utiles"
 
-export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoPedido: ClassInformacionPedido, _infoSede: ClassInfoSede, { provider, flowDynamic }) => {
+export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoPedido: ClassInformacionPedido, _infoSede: ClassInfoSede, userResponseVoice: string = '', { provider, flowDynamic }) => {
     // console.log('confirmarPedido')
 
     let infoFlowPedido = infoPedido.getVariablesFlowPedido()
@@ -28,20 +28,21 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
     const jid = ctx.key.remoteJid
     const sock = await provider.getInstance(jid)
     await sock.presenceSubscribe(jid)
-    await sock.sendPresenceUpdate('composing', jid)
-    let userResponse = ctx.body.toLowerCase().trim()
+    await sock.sendPresenceUpdate('composing', jid)    
+    let userResponse = userResponseVoice!=='' ? userResponseVoice : ctx.body.toLowerCase().trim()
 
     // iniciamos el chatbot
     let chatGptConfirmaPedido = new ChatGPT('recolector', 'cliente', infoPedido)
+    
 
     // si es mensaje de voz
-    if (userResponse.includes('event_voice')) {
-        await flowDynamic("dame un momento para escucharte...🙉");
-        console.log("🤖 voz a texto....");
-        const text = await handlerAI(ctx);
-        console.log(`🤖 Fin voz a texto....[TEXT]: ${text}`);
-        userResponse = text
-    }
+    // if (userResponse.includes('event_voice')) {
+    //     await flowDynamic("dame un momento para escucharte...🙉");
+    //     console.log("🤖 voz a texto....");
+    //     const text = await handlerAI(ctx);
+    //     console.log(`🤖 Fin voz a texto....[TEXT]: ${text}`);
+    //     userResponse = text
+    // }
 
     // confirma el importe total del pedido
     if (infoFlowPedido.preguntaSiEstaConformeOk) {
@@ -302,7 +303,7 @@ function getMsjPedidoConfirmado(paramsFlowInteraction, infoFlowPedido) {
     infoFlowPedido.nivelConfirmarPedido = 0
     paramsFlowInteraction.nivel_titulo = tituloNivel.saludoIncial
     paramsFlowInteraction.nivel = '0'    
-    return 'Listo 🤙 *Pedido confirmado*\nMuchas gracias por su preferencia 🙂'
+    return 'Listo 🤙 *Pedido confirmado*\nMuchas gracias por su preferencia 🙂'    
 }
 
 function cocinarTiposDeConsumno(listCanalesConsumo) {

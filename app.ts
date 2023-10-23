@@ -1,9 +1,10 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { createServer } from "http";
 import { Server } from 'socket.io';
 import cors from 'cors'; 
 import socketsConnect  from './controllers/socket';
 import { obtenerHoraMinutosPorZonaHoraria3 } from './services/utiles';
+import cron from 'node-cron';
 // import { config } from './config';
 
 // import 'dotenv/config'
@@ -43,6 +44,21 @@ const io = new Server(httpServer, {
 
 // crear data base clientes
 const database = new SqliteDatabase('database.sqlite');
+
+setTimeout(() => {
+    database.deleteRecordsHistory();
+}, 5000)
+
+// cada 12 horas se elimina los registros de la tabla history
+cron.schedule('0 */12 * * *', async () => {
+    try {        
+        await database.deleteRecordsHistory();
+    } catch (error) {
+        console.log('error al eliminar los registros de la tabla', error)
+    }
+});
+
+
 
 socketsConnect(io, database)
 
