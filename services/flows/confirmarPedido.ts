@@ -7,6 +7,7 @@ import { PROMPTS } from "../../prompts/prompts"
 import endpoint from '../../endpoints.config';
 import { GeolocationServices } from "../geolocation.service"
 import { capitalize, extraerSoloCamposFaltantes, formatPadArrayToString, getListaProductosArrayToString, getObjectKeys, handlerAI, obtenerClavesSinDatos } from "../utiles"
+import { searchItemInList } from "../search.plato.services"
 
 export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoPedido: ClassInformacionPedido, _infoSede: ClassInfoSede, userResponseVoice: string = '', { provider, flowDynamic }) => {
     // console.log('confirmarPedido')
@@ -62,12 +63,14 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
     }
 
     let listCanalesConsumo = infoSede.getlistCanalConsumo()
+    console.log('listCanalesConsumo === 1', listCanalesConsumo);
 
     // mostrar canales de consumo
     if (infoFlowPedido.nivelConfirmarPedido===0) {        
-        listCanalesConsumo = cocinarTiposDeConsumno(listCanalesConsumo)
+        const listCanalesConsumo_show = cocinarTiposDeConsumno(listCanalesConsumo)
+        console.log('listCanalesConsumo === 2', listCanalesConsumo_show);
         
-        rptReturn = `*Ahora, seleccione el canal, escriba:* \n${listCanalesConsumo.join('\n')}`   
+        rptReturn = `*Ahora, seleccione el canal, escriba:* \n${listCanalesConsumo_show.join('\n')}`   
         infoFlowPedido.nivelConfirmarPedido = 1
         return rptReturn;
         // setTipoCanalConsumoSeleted(canalConsumoSeleted, infoPedido)
@@ -83,7 +86,8 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
         let canalConsumoSeleted: any;
         if (!_isNumberSeletedTPC) {
             // si escribio el nombre del canal de consumo
-            canalConsumoSeleted = listCanalesConsumo.find((item: any) => item.descripcion.toLowerCase().includes(userResponse))
+            // canalConsumoSeleted = listCanalesConsumo.find((item: any) => item.descripcion.toLowerCase().includes(userResponse))
+            canalConsumoSeleted = searchItemInList(listCanalesConsumo, userResponse, 'descripcion')
             console.log('listCanalesConsumo', canalConsumoSeleted);            
         } else {
             canalConsumoSeleted = listCanalesConsumo.find((item: any) => item.idshow === parseInt(userResponse))
@@ -91,6 +95,7 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
         
         
         if (!canalConsumoSeleted) {
+            
             return 'Escriba un numero valido, para seleccionar el canal de consumo'
         }
         
@@ -218,8 +223,9 @@ export const confimarPedido = async (paramsFlowInteraction: any, ctx: any, infoP
 
         let _isNumberSeletectedTP = !isNaN(parseInt(userResponse))  
         if (!_isNumberSeletectedTP ) {
-            _tipoPagoSeleted = listTipoPago.find((item: any) => item.descripcion.toLowerCase().includes(userResponse))
-            _idTipoPago = _tipoPagoSeleted.idshow
+            // _tipoPagoSeleted = listTipoPago.find((item: any) => item.descripcion.toLowerCase().includes(userResponse))
+            _tipoPagoSeleted = searchItemInList(listTipoPago, userResponse, 'descripcion')
+            _idTipoPago = _tipoPagoSeleted?.idshow || null
         } else {
             _idTipoPago = userResponse
             _tipoPagoSeleted = listTipoPago.find((item: any) => item.idshow === parseInt(_idTipoPago))

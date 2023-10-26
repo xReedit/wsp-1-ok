@@ -463,3 +463,28 @@ function buscarCoincidenciasSoundex(listaPlatos: any[], pedidoCliente: any[]) {
     // console.log('cantidadesMayores', cantidadesMayores);    
     return [encontrados, noEncontrados, cantidadesMayores];
 }
+
+// funcion que de entrada tendra un array de opciones y un string de busqueda
+// devolvera un array de opciones que coincidan con la busqueda
+export function searchItemInList(list:[], search: string, keySearch: string) {
+    const options = {
+        shouldSort: true,
+        includeScore: true,
+        includeMatches : true,
+        findAllMatches: true,
+        ignoreLocation: true,
+        useExtendedSearch: true,
+        Location: 1,
+        threshold: 0.4, // Umbral de similitud (puedes ajustarlo según tus necesidades)
+        keys: [keySearch]
+    };
+
+    const fuse = new Fuse(list, options);
+
+    const result = fuse.search(search);
+    // console.log('result fuse', result);
+    if (result.length > 0) {
+        return result[0].item;
+    }
+    return null
+}

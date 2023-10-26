@@ -205,4 +205,30 @@ export class SqliteDatabase {
         // guardamos en database        
         this.save(ctxFrom, infoPedido)
     }
+
+    // funcion devuelve el tiempo trasncurrido en minutos de date_register con la fecha actual
+    getMinLastInteraction(id: string) {
+        id = id.trim();
+        const selectQuery = `
+            SELECT strftime('%M', 'now') - strftime('%M', date_register) as minutos
+            FROM records
+            WHERE id = ?;
+        `;
+
+        return new Promise<any | null>((resolve, reject) => {
+            this.db.get(selectQuery, [id], (err, row: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    try {
+                        // Parse the JSON data and handle potential parsing errors
+                        const result = row ? JSON.parse(row.minutos) : null;
+                        resolve(result);
+                    } catch (parseError) {
+                        reject(parseError);
+                    }
+                }
+            });
+        });
+    }    
 }

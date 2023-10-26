@@ -1,15 +1,23 @@
 [
   {
-    "ref": "0166cee7-e251-4ebe-b01f-0b25c52973b0",
-    "keyword": "71f3ba4d9c533881aa051492651d88f4",
-    "answer": "hola}",
+    "ref": "8681bd13-2d0e-42fb-a094-f83247650c2d",
+    "keyword": "a59cfdbba15e8527d1408cfc3760182a",
+    "answer": "hola",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "ebecb9ce66133e7285e6c3898d9120c4"
+    "refSerialize": "79e7fc16f7fb85373fd25a99390f44c0"
   },
   {
-    "ref": "1f0f2cc5-1613-4a51-a53f-60bf8bed9122",
-    "answer": "👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n*3*  📃 para reenviarte un comprobante",
+    "ref": "01654b31-5476-4ca2-ba6d-2898c39e5f16",
+    "keyword": "79e7fc16f7fb85373fd25a99390f44c0",
+    "answer": "hola",
+    "options": {},
+    "from": "51934746830",
+    "refSerialize": "79e7fc16f7fb85373fd25a99390f44c0"
+  },
+  {
+    "ref": "ef146ba7-4f58-49d8-a138-f17beb41767e",
+    "answer": "Dime lo que necesitas.",
     "options": {
       "media": null,
       "buttons": [],
@@ -17,11 +25,11 @@
       "delay": 0
     },
     "from": "51934746830",
-    "refSerialize": "1d2bf3fb59fe2f2bd4d3a9abf701858a"
+    "refSerialize": "3ffaaf910e1858c9ebddfe76f174cf28"
   },
   {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
     "answer": "...",
     "options": {
       "media": null,
@@ -33,12 +41,12 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
     "from": "51934746830"
   },
   {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
     "answer": "...",
     "options": {
       "media": null,
@@ -50,95 +58,20 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
     "from": "51934746830"
   },
   {
-    "ref": "06659a3c-753e-4e06-814a-321027d42ca9",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "xzcxzcxzc",
+    "ref": "ec870e94-b57a-4041-ae0c-35022ef00e82",
+    "keyword": "f46013cce0a9401d9cd7b53754d1eea4",
+    "answer": "quiero dos tilapias fritas",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "477ceea33dd5ee99eddbdba17e135f86"
+    "refSerialize": "1e984818ed83fd0ff2d46aa77cf23405"
   },
   {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
-    "answer": "👉 Elige una de las opciones, escribe:\n*1*  🥗 para hacer un pedido\n*2*  🎴 para enviarte la carta\n*3*  📃 para reenviarte un comprobante",
-    "options": {
-      "media": null,
-      "buttons": [],
-      "capture": true,
-      "child": null,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "from": "51934746830"
-  },
-  {
-    "ref": "a8462346-1c8b-4a61-a08d-9045e43725ab",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "quiero hacer un pedido",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "6ede2b2336cb1a567f4615e18b0573da"
-  },
-  {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
-    "answer": "Digame su pedido. O desea ver la carta? 🎴",
-    "options": {
-      "media": null,
-      "buttons": [],
-      "capture": true,
-      "child": null,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "from": "51934746830"
-  },
-  {
-    "ref": "3e716ed9-7ae2-49c0-923e-67028f0c0418",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "ver la carta",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "4a288c90e6068f46e556785341e0dff8"
-  },
-  {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
-    "answer": "Cuando este listo, me dice su pedido, de manera escrita ✍️ o por voz 🗣️.\nDe prefencia en una sola línea y en este formato:\n*cantidad nombre_del_producto(indiciaciones)*\nPor ejemplo:\nQuiero *2 ceviches(1 sin aji), 1 pollo al horno*",
-    "options": {
-      "media": null,
-      "buttons": [],
-      "capture": true,
-      "child": null,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "from": "51934746830"
-  },
-  {
-    "ref": "52d88c6a-11c0-4c3c-a348-9a681d5fe953",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "ok, quiero 2 tilapias fritas",
-    "options": {},
-    "from": "51934746830",
-    "refSerialize": "8347b548a89d94599753ef1dae6ca0d4"
-  },
-  {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
     "answer": "¿Desea algo más?",
     "options": {
       "media": null,
@@ -150,21 +83,21 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
     "from": "51934746830"
   },
   {
-    "ref": "dffd9b30-e57d-4e5b-a2af-2c33c2d95ace",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "xcvxcvxcvxc",
+    "ref": "c3ca29d0-1d5f-42e0-b8ef-46dd96525a0f",
+    "keyword": "f46013cce0a9401d9cd7b53754d1eea4",
+    "answer": "no",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "612ba1eeedd5c0bbc3d02624a669c640"
+    "refSerialize": "196d1c4297b3cc409a816659f65c2beb"
   },
   {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
-    "answer": "No entendí su respuesta, verifique la ortografía y vuelva a escribirlo.",
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
+    "answer": "Confirme, esto es lo que entendi:\n2 tilapia frita con patacones\n\nEscriba *CONFIRMAR* para continuar.",
     "options": {
       "media": null,
       "buttons": [],
@@ -175,21 +108,21 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
     "from": "51934746830"
   },
   {
-    "ref": "1199f320-c84e-4ea6-84ca-056c7d13adc0",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "cxzczxczxcxz",
+    "ref": "4aac56a5-182d-4370-b151-b501afda1fee",
+    "keyword": "f46013cce0a9401d9cd7b53754d1eea4",
+    "answer": "confirmar",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "a0b534b82e085fedd8767923e9154036"
+    "refSerialize": "eb556648dae407b0c7a0726be0954070"
   },
   {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
-    "answer": "No entendí su respuesta, verifique la ortografía y vuelva a escribirlo.",
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
+    "answer": "*Ahora, seleccione el canal, escriba:* \n*1* Para Delivery 🛵\n*2* Para Recoger 👜\n*3* Para Reservar 🕜",
     "options": {
       "media": null,
       "buttons": [],
@@ -200,21 +133,21 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
     "from": "51934746830"
   },
   {
-    "ref": "f58c227a-55a7-4fed-a7f1-e3966c2bdd26",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "xzcxzcxzczxc",
+    "ref": "92ed7f11-b426-4853-a402-e3eb078f1cad",
+    "keyword": "f46013cce0a9401d9cd7b53754d1eea4",
+    "answer": "recoger",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "d883cc81a7611f2e2f1e7913cb1efbfe"
+    "refSerialize": "25364272315a20b247e11913c4a6c6fd"
   },
   {
-    "ref": "ans_9efd1bfc-8349-4109-bb13-c3b773aecf4f",
-    "keyword": "ans_58bd8503-7b78-4f87-a186-934f4a6c933c",
-    "answer": "💔 Me desactivare por 15min para que un asistente humano lo atienda. Que tenga un buen día.",
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
+    "answer": "El costo total del pedido es: *S/.40.00*\n\n*platos criollos*                         .\n2 tilapia frita con pata....40.00\n\nsub total.....................................36.36\ni.g.v............................................. 3.64\ntotal.............................................40.00\n\n*Nota:* El pedido estará listo en aproximadamente 10 minutos.\n\nSi esta de acuerdo responda *OK* para enviar su pedido.",
     "options": {
       "media": null,
       "buttons": [],
@@ -225,15 +158,57 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
     "from": "51934746830"
   },
   {
-    "ref": "9f12e493-971f-4dda-9fbd-7c048000acb8",
-    "keyword": "4d9d15c46a6bf7a34b5d1c03fe0403e7",
-    "answer": "hola",
+    "ref": "3d9be209-ee28-48b9-ab06-a5142b7bcfb0",
+    "keyword": "f46013cce0a9401d9cd7b53754d1eea4",
+    "answer": "ok",
     "options": {},
     "from": "51934746830",
-    "refSerialize": "79e7fc16f7fb85373fd25a99390f44c0"
+    "refSerialize": "5024d8306739a7b2b633ca6e46c22e04"
+  },
+  {
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
+    "answer": "Listo 🤙\n\n*Ahora seleccione como desea pagar, escriba:*\n*1* Para Efectivo\n*2* Para Yape\n*3* Para Plin",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
+    "from": "51934746830"
+  },
+  {
+    "ref": "d31cd7de-f5b1-4b94-ba54-a477d4e50536",
+    "keyword": "f46013cce0a9401d9cd7b53754d1eea4",
+    "answer": "yap",
+    "options": {},
+    "from": "51934746830",
+    "refSerialize": "0b47106bb5365f8bd91160c6967109ac"
+  },
+  {
+    "ref": "ans_c5a49429-33d8-4e25-aef3-13c185804215",
+    "keyword": "ans_1e578be7-5ee1-4be0-b6cb-e65983528b8a",
+    "answer": "Listo 🤙 *Pedido confirmado*\nMuchas gracias por su preferencia 🙂",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": true,
+      "child": null,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "f46013cce0a9401d9cd7b53754d1eea4",
+    "from": "51934746830"
   }
 ]

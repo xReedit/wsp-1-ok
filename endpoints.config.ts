@@ -11,6 +11,7 @@ export default {
     url_api_pedido: process.env.URL_API_PEDIDO ?? '',
     url_img_carta: process.env.URL_IMG_CARTA ?? '',
     url_tienda_linea: process.env.URL_TIENDA_LINEA ?? '',
+    time_min_remove_last_interaction: process.env.TIME_MIN_REMOVE_LAST_INTERTACION ?? '',
     rolRecepcion: process.env.PROMPT_RECEPCION ?? '',
     rolMozo: process.env.PROMPT_MOZO ?? '',
     rolMozo2: process.env.PROMPT_MOZO2 ?? '',

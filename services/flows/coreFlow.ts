@@ -14,6 +14,7 @@ import { cambiarNombreCliente } from "./cambiarNombreCliente";
 import { noEntendido } from "./noEntendido";
 import { getListOptionsBot, getOptionFromNumber } from "./esperaNumeroOpcion";
 import { handlerAI, isTimeActivedBot } from "../utiles";
+import endpoint from '../../endpoints.config';
 
 export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassInfoSede, database: SqliteDatabase, { provider, fallBack, endFlow, flowDynamic, gotoFlow }) => {    
     let msjFormatoPedido = `De prefencia en una sola línea y en este formato:\n*cantidad nombre_del_producto(indiciaciones)*\nPor ejemplo:\nQuiero *2 ceviches(1 sin aji), 1 pollo al horno*`
@@ -43,7 +44,7 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
     let paramsFlowInteraction = infoPedido.getVariablesFlowInteraccion()
     let infoFlowPedido = infoPedido.getVariablesFlowPedido()           
     
-    guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
+    // guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
 
 
     // console.log('infoPedido ini', infoPedido);
@@ -55,10 +56,26 @@ export const coreFlow = async (isFromAction: boolean, ctx: any, infoSede: ClassI
         console.log('_isTimeActivedBot', _isTimeActivedBot);
         if (_isTimeActivedBot) {
             infoPedido.setBotOnline(true)
-        } else {
+            // va al saludo inicial
+            paramsFlowInteraction.nivel_titulo = tituloNivel.saludoIncial
+        } else {            
             guardarDatosLocalBD(infoPedido, infoFlowPedido, paramsFlowInteraction, idUserTable, database)
             return false;
         }
+    } else {
+        // verificamos hace cuantos minutos fue su ultima interaccion
+        const minLastInteraction = await database.getMinLastInteraction(idUserTable)
+        if ( minLastInteraction >= endpoint.time_min_remove_last_interaction ) {
+            //remove para comenzar nuevamente
+            console.log('remove para comenzar nuevamente');
+            database.delete(idUserTable)
+            infoPedido = await database.getInfoPedido(idUserTable)
+
+            paramsFlowInteraction = infoPedido.getVariablesFlowInteraccion()
+            infoFlowPedido = infoPedido.getVariablesFlowPedido()   
+        }
+
+        console.log('minutosTranscurridos', minLastInteraction, endpoint.time_min_remove_last_interaction);
     }
 
     console.log('paso sigueinte');
